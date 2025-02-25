@@ -1,0 +1,77 @@
+<!-- Ajouter Phosphor Icons -->
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+<section class="bg-white dark:bg-gray-900 py-8 px-4 mx-auto max-w-screen-xl">
+  <div class="lg:grid lg:grid-cols-2 lg:gap-16 lg:py-16 lg:px-6">
+    <!-- Colonne gauche : Formulaire -->
+    <div class="bg-white bg-opacity-80 p-6 rounded-lg shadow-lg">
+      <p class="text-lg text-gray-500 sm:text-xl dark:text-gray-400 mb-6">
+        Complétez ce formulaire pour réserver votre espace et profiter pleinement de cette opportunité. Nous vous souhaitons bonne chance dans vos démarches et une expérience agréable !
+      </p>
+      <h2 class="text-3xl font-semibold mb-6 text-gray-800 flex items-center gap-2">
+        <i class="ph ph-note-pencil"></i> Formulaire de Réservation
+      </h2>
+
+      <!-- Formulaire réactif -->
+      <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <!-- Date de commencement -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 flex items-center gap-2" for="dateStart">
+            <i class="ph ph-calendar"></i> Date de commencement
+          </label>
+          <input id="dateStart" type="date" formControlName="dateStart"
+            class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder:text-sm" />
+          <!-- Message d'erreur -->
+          <div *ngIf="reservationForm.get('dateStart')?.invalid && (reservationForm.get('dateStart')?.dirty || reservationForm.get('dateStart')?.touched)"
+            class="text-red-500 text-sm mt-1">
+            <span *ngIf="reservationForm.get('dateStart')?.errors?.['required']">La date de commencement est obligatoire.</span>
+          </div>
+        </div>
+
+        <!-- Date d'achèvement -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 flex items-center gap-2" for="dateEnd">
+            <i class="ph ph-calendar"></i> Date d’achèvement
+          </label>
+          <input id="dateEnd" type="date" formControlName="dateEnd"
+            class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder:text-sm" />
+          <!-- Message d'erreur -->
+          <div *ngIf="reservationForm.get('dateEnd')?.invalid && (reservationForm.get('dateEnd')?.dirty || reservationForm.get('dateEnd')?.touched)"
+            class="text-red-500 text-sm mt-1">
+            <span *ngIf="reservationForm.get('dateEnd')?.errors?.['required']">La date d'achèvement est obligatoire.</span>
+          </div>
+        </div>
+
+        <!-- Nombre de places -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 flex items-center gap-2" for="nbrePlaces">
+            <i class="ph ph-users"></i> Nombre de places
+          </label>
+          <input id="nbrePlaces" type="number" formControlName="nbrePlaces"
+            class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder:text-sm"
+            placeholder="Entrez le nombre de places" />
+          <!-- Message d'erreur -->
+          <div *ngIf="reservationForm.get('nbrePlaces')?.invalid && (reservationForm.get('nbrePlaces')?.dirty || reservationForm.get('nbrePlaces')?.touched)"
+            class="text-red-500 text-sm mt-1">
+            <span *ngIf="reservationForm.get('nbrePlaces')?.errors?.['required']">Le nombre de places est obligatoire.</span>
+            <span *ngIf="reservationForm.get('nbrePlaces')?.errors?.['min']">Le nombre de places doit être supérieur à 0.</span>
+          </div>
+        </div>
+
+        <!-- Bouton Réserver -->
+        <div class="flex justify-center mt-8">
+          <button type="submit" [disabled]="reservationForm.invalid"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 text-sm rounded-lg shadow transition-all flex items-center gap-2">
+            <i class="ph ph-calendar-check"></i> Réserver
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Colonne droite : Images -->
+    <div class="grid grid-cols-2 gap-4 mt-8 lg:mt-0">
+      <img class="w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/content/office-long-2.png" alt="Office content 1">
+      <img class="w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/content/office-long-1.png" alt="Office content 2">
+    </div>
+  </div>
+</section>

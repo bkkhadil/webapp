@@ -1,0 +1,141 @@
+<div class="mx-auto max-w-screen-2xl px-4 lg:px-12 flex justify-center">
+  <p class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-4 text-center max-w-2xl">
+    Remplissez le formulaire de manière simple et rapide pour ajouter votre espace de coworking en quelques clics.
+  </p>
+</div>
+
+<form [formGroup]="coworkspaceForm" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto px-4 mt-12">
+  <!-- Coworking Space Details -->
+  <div class="grid gap-4 mb-4 sm:grid-cols-2">
+    <!-- Nom du coworking space -->
+    <div>
+      <label for="coworkspace-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        <i class="ph ph-building" aria-hidden="true"></i> Nom du coworking space
+      </label>
+      <input type="text" id="coworkspace-name" formControlName="nom"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Nom du coworking space">
+      <!-- Message d'erreur -->
+      <div *ngIf="coworkspaceForm.get('nom')?.invalid && (coworkspaceForm.get('nom')?.dirty || coworkspaceForm.get('nom')?.touched)"
+        class="text-red-500 text-sm mt-1">
+        <span *ngIf="coworkspaceForm.get('nom')?.errors?.['required']">Le nom est obligatoire.</span>
+      </div>
+    </div>
+
+    <!-- Adresse -->
+    <div>
+      <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        <i class="ph ph-map-pin" aria-hidden="true"></i> Adresse
+      </label>
+      <input type="text" id="address" formControlName="adresse"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Adresse du coworking space">
+      <!-- Message d'erreur -->
+      <div *ngIf="coworkspaceForm.get('adresse')?.invalid && (coworkspaceForm.get('adresse')?.dirty || coworkspaceForm.get('adresse')?.touched)"
+        class="text-red-500 text-sm mt-1">
+        <span *ngIf="coworkspaceForm.get('adresse')?.errors?.['required']">L'adresse est obligatoire.</span>
+      </div>
+    </div>
+
+    <!-- Ville -->
+    <div>
+      <label for="city" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        <i class="ph ph-city" aria-hidden="true"></i> Ville
+      </label>
+      <input type="text" id="city" formControlName="ville"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Ville du coworking space">
+      <!-- Message d'erreur -->
+      <div *ngIf="coworkspaceForm.get('ville')?.invalid && (coworkspaceForm.get('ville')?.dirty || coworkspaceForm.get('ville')?.touched)"
+        class="text-red-500 text-sm mt-1">
+        <span *ngIf="coworkspaceForm.get('ville')?.errors?.['required']">La ville est obligatoire.</span>
+      </div>
+    </div>
+
+    <!-- Date de création -->
+    <div>
+      <label for="creation-date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        <i class="ph ph-calendar" aria-hidden="true"></i> Date de création
+      </label>
+      <input type="date" id="creation-date" formControlName="date_creation"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+      <!-- Message d'erreur -->
+      <div *ngIf="coworkspaceForm.get('date_creation')?.invalid && (coworkspaceForm.get('date_creation')?.dirty || coworkspaceForm.get('date_creation')?.touched)"
+        class="text-red-500 text-sm mt-1">
+        <span *ngIf="coworkspaceForm.get('date_creation')?.errors?.['required']">La date de création est obligatoire.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Équipements disponibles -->
+  <div class="mt-4">
+    <label class="block text-sm font-medium text-gray-700 dark:text-white">Équipements disponibles :</label>
+    <div class="grid grid-cols-2 gap-4 mt-2">
+      <label *ngFor="let eq of equipmentOptions" class="flex items-center gap-2">
+        <input type="checkbox" [(ngModel)]="eq.selected" [ngModelOptions]="{ standalone: true }" class="accent-primary-500">
+        <span>{{ eq.name }}</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Description -->
+  <div class="mt-6">
+    <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description du coworking space</label>
+    <textarea id="description" formControlName="description"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+      placeholder="Description du coworking space"></textarea>
+    <!-- Message d'erreur -->
+    <div *ngIf="coworkspaceForm.get('description')?.invalid && (coworkspaceForm.get('description')?.dirty || coworkspaceForm.get('description')?.touched)"
+      class="text-red-500 text-sm mt-1">
+      <span *ngIf="coworkspaceForm.get('description')?.errors?.['required']">La description est obligatoire.</span>
+    </div>
+  </div>
+
+  <!-- Espaces Table -->
+  <div class="mx-auto max-w-screen-2xl px-4 lg:px-12 flex justify-center">
+    <p class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-4 text-center max-w-2xl">
+      Dans ce tableau, vous trouverez les espaces déjà ajoutés à cet espace de travail.
+    </p>
+  </div>
+
+  <div class="overflow-x-auto mb-6">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+          <th scope="col" class="p-4">Type d'espace</th>
+          <th scope="col" class="p-4">Nombre d’espaces</th>
+          <th scope="col" class="p-4">Capacité</th>
+          <th scope="col" class="p-4">Prix par mois</th>
+          <th scope="col" class="p-4">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let espace of coworkspaceForm.get('espaces')?.value" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <td class="p-4">{{ espace.type }}</td>
+          <td class="p-4">{{ espace.nbretype }}</td>
+          <td class="p-4">{{ espace.capacite }}</td>
+          <td class="p-4">{{ espace.prix_par_mois }}</td>
+          <td class="px-4 py-3 flex justify-center space-x-2">
+            <button class="flex items-center gap-1 py-2 px-3 text-sm font-medium text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-600 hover:text-white dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-white transition">
+              <i class="ph ph-pencil-simple"></i> Modifier
+            </button>
+            <button class="flex items-center gap-1 py-2 px-3 text-sm font-medium text-red-600 border border-red-600 rounded-lg hover:bg-red-600 hover:text-white dark:border-red-400 dark:text-red-400 dark:hover:bg-red-400 dark:hover:text-white transition">
+              <i class="ph ph-trash"></i> Supprimer
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Form Actions -->
+  <div class="mt-6 flex gap-4">
+    <button type="submit" [disabled]="coworkspaceForm.invalid"
+      class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700">
+      Soumettre
+    </button>
+    <button (click)="onAddSpace()" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+      Ajouter Autre Espace
+    </button>
+  </div>
+</form>

@@ -1,0 +1,84 @@
+<main class="mb-20 md:mb-24 lg:mb-28"> <!-- Ajustez les marges en fonction de la hauteur du footer -->
+  <section class="mx-auto max-w-4xl px-6 mt-0">
+    <!-- Section de réservation -->
+    <form class="max-w-3xl mx-auto mb-8" (submit)="search()">
+      <div class="flex flex-col sm:flex-row items-center shadow-lg border rounded-lg overflow-hidden">
+        <label for="city-dropdown" class="sr-only">Sélectionner une ville</label>
+        <select
+          id="city-dropdown"
+          [(ngModel)]="selectedCity"
+          name="city"
+          class="w-full sm:w-auto py-3 px-6 text-sm text-gray-900 bg-gray-100 border-r border-gray-300 rounded-l-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600 mb-4 sm:mb-0"
+        >
+          <option value=""><i class="ph ph-map-pin"></i> Ville</option>
+          <option value="monastir">Monastir</option>
+          <option value="sousse">Sousse</option>
+          <option value="gabes">Gabès</option>
+          <option value="sfax">Sfax</option>
+        </select>
+
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          name="search"
+          class="flex-grow py-3 px-6 text-sm text-gray-900 bg-white border-none focus:ring-0 focus:outline-none dark:bg-gray-700 dark:text-white mb-4 sm:mb-0"
+          placeholder="Rechercher..."
+        />
+
+        <button type="submit" class="flex items-center py-3 px-6 bg-blue-600 text-white text-sm font-medium rounded-r-lg hover:bg-blue-700 flex-shrink-0">
+          <i class="ph ph-magnifying-glass"></i>
+          <span class="sr-only">Rechercher</span>
+        </button>
+      </div>
+    </form>
+
+    <!-- Cartes des espaces -->
+    <section>
+      <p *ngIf="results.length === 0" class="text-gray-500">
+        😕 Désolé, aucun résultat ne correspond à votre recherche. Essayez d'affiner vos critères !
+      </p>
+
+      <p *ngIf="results.length > 0" class="text-gray-500">
+        Votre espace idéal est peut-être parmi nos {{ results.length }} résultats ! <br><br>Votre espace idéal vous attend parmi nos trois meilleures sélections ! Explorez-les sans plus tarder et réservez en toute simplicité l'endroit parfait pour vos besoins. Nous espérons que vous vivrez une expérience unique et mémorable, alliant confort, praticité et satisfaction.
+      </p>
+
+      <div *ngIf="espaces.length > 0; else noResults" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6">
+        <div *ngFor="let espace of espaces; trackBy: trackByNom" class="space-y-6 overflow-hidden rounded-lg border border-gray-200 bg-white p-8 shadow-md dark:border-gray-700 dark:bg-gray-800">
+          <a class="overflow-hidden rounded">
+            <img class="mx-auto h-70 w-70" [src]="espace.image" [alt]="espace.nom" />
+          </a>
+
+          <div>
+            <a class="text-xl font-semibold leading-tight text-gray-900 hover:underline dark:text-white">
+              {{ espace.nom }}
+            </a>
+            <p class="mt-2 text-base font-normal text-gray-500 dark:text-gray-400">
+              <i class="ph ph-buildings"></i> {{ espace.type }} - {{ espace.ville }}
+            </p>
+          </div>
+
+          <div>
+            <p class="text-lg font-bold text-gray-900 dark:text-white">
+              <i class="ph ph-map-pin"></i> {{ espace.localisation }}
+            </p>
+          </div>
+
+          <div class="mt-6 flex items-center gap-2.5">
+            <button (click)="goToDetails(espace.id)" type="button" class="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-green-600 p-2.5 text-sm font-medium text-white hover:bg-green-700">
+              <i class="ph ph-info"></i> Détails
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noResults>
+        <p class="text-center text-gray-500">
+          <i class="ph ph-warning"></i> Aucun espace trouvé.
+        </p>
+      </ng-template>
+    </section>
+
+    <!-- Ajout des icônes Phosphor -->
+    <script src="https://unpkg.com/phosphor-icons"></script>
+  </section>
+</main>

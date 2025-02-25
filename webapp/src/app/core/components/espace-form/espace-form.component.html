@@ -1,0 +1,95 @@
+<div class="mx-auto max-w-screen-2xl px-4 lg:px-12 flex justify-center">
+  <p class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-4 text-center max-w-2xl">
+    <br>
+    Remplissez le formulaire de manière simple et rapide pour ajouter votre espace en quelques clics. <br>
+  </p>
+</div>
+
+<form [formGroup]="espaceForm" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto px-4 mt-12">
+  <!-- Type d'espace -->
+  <div>
+    <label for="space-type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+      <i class="ph ph-cube text-gray-500 mr-2"></i> Type d'espace
+    </label>
+    <select id="space-type" formControlName="type"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+      <option *ngFor="let type of spaceTypes" [value]="type">{{ type }}</option>
+    </select>
+    <!-- Message d'erreur -->
+    <div *ngIf="espaceForm.get('type')?.invalid && (espaceForm.get('type')?.dirty || espaceForm.get('type')?.touched)"
+      class="text-red-500 text-sm mt-1">
+      <span *ngIf="espaceForm.get('type')?.errors?.['required']">Le type d'espace est obligatoire.</span>
+    </div>
+  </div>
+
+  <!-- Nombre d’espaces -->
+  <div>
+    <label for="nbretype" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+      <i class="ph ph-users text-gray-500 mr-2"></i> Nombre d’espaces de ce type
+    </label>
+    <input type="number" id="nbretype" formControlName="nbretype"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+      placeholder="Nombre d’espaces">
+    <!-- Message d'erreur -->
+    <div *ngIf="espaceForm.get('nbretype')?.invalid && (espaceForm.get('nbretype')?.dirty || espaceForm.get('nbretype')?.touched)"
+      class="text-red-500 text-sm mt-1">
+      <span *ngIf="espaceForm.get('nbretype')?.errors?.['required']">Le nombre d’espaces est obligatoire.</span>
+      <span *ngIf="espaceForm.get('nbretype')?.errors?.['min']">Le nombre d’espaces doit être supérieur à 0.</span>
+    </div>
+  </div>
+
+  <!-- Capacité -->
+  <div>
+    <label for="capacity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+      <i class="ph ph-door-open text-gray-500 mr-2"></i> Capacité
+    </label>
+    <input type="number" id="capacity" formControlName="capacite"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+      placeholder="Capacité d'accueil">
+    <!-- Message d'erreur -->
+    <div *ngIf="espaceForm.get('capacite')?.invalid && (espaceForm.get('capacite')?.dirty || espaceForm.get('capacite')?.touched)"
+      class="text-red-500 text-sm mt-1">
+      <span *ngIf="espaceForm.get('capacite')?.errors?.['required']">La capacité est obligatoire.</span>
+      <span *ngIf="espaceForm.get('capacite')?.errors?.['min']">La capacité doit être supérieure à 0.</span>
+    </div>
+  </div>
+
+  <!-- Prix par mois -->
+  <div>
+    <label for="price" class="block text-sm font-medium text-gray-700 dark:text-white">
+      <i class="ph ph-money text-gray-500 mr-2"></i> Prix par mois
+    </label>
+    <input type="number" id="price" formControlName="prix_par_mois"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+      placeholder="Prix par mois">
+    <!-- Message d'erreur -->
+    <div *ngIf="espaceForm.get('prix_par_mois')?.invalid && (espaceForm.get('prix_par_mois')?.dirty || espaceForm.get('prix_par_mois')?.touched)"
+      class="text-red-500 text-sm mt-1">
+      <span *ngIf="espaceForm.get('prix_par_mois')?.errors?.['required']">Le prix par mois est obligatoire.</span>
+      <span *ngIf="espaceForm.get('prix_par_mois')?.errors?.['min']">Le prix par mois doit être supérieur à 0.</span>
+    </div>
+  </div>
+
+  <!-- Images -->
+  <div class="mt-6">
+    <label class="block text-sm font-medium text-gray-700 dark:text-white">
+      <i class="ph ph-images text-gray-500 mr-2"></i> Images du coworking space
+    </label>
+    <label for="dropzone-file" class="mt-2 flex justify-center items-center h-40 border-2 border-dashed rounded-lg cursor-pointer dark:bg-gray-700">
+      <div class="text-center">
+        <svg class="w-10 h-10 text-gray-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+        </svg>
+        <p class="text-sm text-gray-500">Cliquez pour télécharger ou glissez-déposez</p>
+        <p class="text-xs text-gray-400">Formats acceptés : SVG, PNG, JPG, GIF (MAX. 800x400px)</p>
+      </div>
+      <input id="dropzone-file" type="file" class="hidden" accept=".svg, .png, .jpg, .gif" (change)="onFileChange($event)" multiple>
+    </label>
+  </div>
+
+  <!-- Bouton Soumettre -->
+  <button type="submit" [disabled]="espaceForm.invalid"
+    class="mt-2 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700">
+    Soumettre
+  </button>
+</form>
