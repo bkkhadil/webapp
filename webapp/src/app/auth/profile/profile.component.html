@@ -1,0 +1,61 @@
+<div class="max-w-2xl mx-auto p-6">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+    <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Modifier le profil</h2>
+    
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Section Informations de base -->
+      <div class="grid gap-6 md:grid-cols-2">
+        <div>
+          <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Prénom *</label>
+          <input formControlName="firstname" type="text"
+                 [class.border-red-500]="profileForm.get('firstname')?.invalid && profileForm.get('firstname')?.touched"
+                 class="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+          <small *ngIf="profileForm.get('firstname')?.errors?.['required'] && profileForm.get('firstname')?.touched" 
+                 class="text-red-500">Champ obligatoire</small>
+        </div>
+        
+        <div>
+          <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom *</label>
+          <input formControlName="lastname" type="text"
+                 [class.border-red-500]="profileForm.get('lastname')?.invalid && profileForm.get('lastname')?.touched"
+                 class="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+          <small *ngIf="profileForm.get('lastname')?.errors?.['required'] && profileForm.get('lastname')?.touched" 
+                 class="text-red-500">Champ obligatoire</small>
+        </div>
+      </div>
+
+      <!-- Section Mot de passe -->
+      <div class="space-y-4">
+        <div>
+          <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mot de passe actuel</label>
+          <input formControlName="currentPassword" type="password"
+                 class="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                 placeholder="Obligatoire pour modifier le mot de passe">
+        </div>
+        
+        <div>
+          <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nouveau mot de passe</label>
+          <input formControlName="newPassword" type="password"
+                 class="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                 placeholder="Laissez vide pour ne pas changer">
+        </div>
+      </div>
+
+      <div *ngIf="profileForm.get('newPassword')?.errors?.['passwordMismatch']" class="text-red-500 text-sm">
+        {{ profileForm.getError('passwordMismatch') }}
+      </div>
+      <button type="submit" 
+              [disabled]="profileForm.invalid || isLoading"
+              class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50">
+        
+        <div class="flex items-center justify-center gap-2">
+          <svg *ngIf="isLoading" class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          {{ isLoading ? 'Enregistrement...' : 'Mettre à jour' }}
+        </div>
+      </button>
+    </form>
+  </div>
+</div>

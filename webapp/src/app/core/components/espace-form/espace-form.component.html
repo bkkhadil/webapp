@@ -57,7 +57,7 @@
   <!-- Prix par mois -->
   <div>
     <label for="price" class="block text-sm font-medium text-gray-700 dark:text-white">
-      <i class="ph ph-money text-gray-500 mr-2"></i> Prix par mois
+      <i class="ph ph-money text-gray-500 mr-2"></i> Prix par jour
     </label>
     <input type="number" id="price" formControlName="prix_par_mois"
       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -70,11 +70,27 @@
     </div>
   </div>
 
+
+
+  <!-- Description -->
+  <div class="mt-6">
+    <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description de votre espace</label>
+    <textarea id="description" formControlName="description"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+      placeholder="Description du coworking space"></textarea>
+    <!-- Message d'erreur -->
+    <div *ngIf="espaceForm.get('description')?.invalid && (espaceForm.get('description')?.dirty || espaceForm.get('description')?.touched)"
+      class="text-red-500 text-sm mt-1">
+      <span *ngIf="espaceForm.get('description')?.errors?.['required']">La description est obligatoire.</span>
+    </div>
+  </div>
+
   <!-- Images -->
   <div class="mt-6">
     <label class="block text-sm font-medium text-gray-700 dark:text-white">
-      <i class="ph ph-images text-gray-500 mr-2"></i> Images du coworking space
+      <i class="ph ph-images text-gray-500 mr-2"></i> Image du coworking space
     </label>
+    
     <label for="dropzone-file" class="mt-2 flex justify-center items-center h-40 border-2 border-dashed rounded-lg cursor-pointer dark:bg-gray-700">
       <div class="text-center">
         <svg class="w-10 h-10 text-gray-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -83,13 +99,13 @@
         <p class="text-sm text-gray-500">Cliquez pour télécharger ou glissez-déposez</p>
         <p class="text-xs text-gray-400">Formats acceptés : SVG, PNG, JPG, GIF (MAX. 800x400px)</p>
       </div>
-      <input id="dropzone-file" type="file" class="hidden" accept=".svg, .png, .jpg, .gif" (change)="onFileChange($event)" multiple>
+      <input id="dropzone-file" type="file" class="hidden" accept=".svg, .png, .jpg, .gif" (change)="onFileChange($event)">
     </label>
   </div>
-
-  <!-- Bouton Soumettre -->
-  <button type="submit" [disabled]="espaceForm.invalid"
-    class="mt-2 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700">
-    Soumettre
-  </button>
+  
+   <!-- Bouton Soumettre -->
+   <button type="submit" [disabled]="espaceForm.invalid"
+   class="mt-2 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700">
+   Soumettre
+ </button>
 </form>

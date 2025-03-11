@@ -1,35 +1,18 @@
+  import { User } from '../../../models/user.model';
 import { Espace } from '../models/espace.model';
+  import { Equipment } from './equipment';
 
-export class CoWorkspace {
-  id_co_workspace: string; // Changé en string
-  id_responsable: number;
-  nom: string;
-  ville: string;
-  adresse: string;
-  date_creation: Date;
-  description: string;
-  equipments: string[];
-  espaces: Espace[];
-
-  constructor(
-    id_co_workspace: string,
-    id_responsable: number,
-    nom: string,
-    ville: string,
-    adresse: string,
-    date_creation: Date,
-    description: string,
-    equipments: string[] = [],
-    espaces: Espace[] = []
-  ) {
-    this.id_co_workspace = id_co_workspace;
-    this.id_responsable = id_responsable;
-    this.nom = nom;
-    this.ville = ville;
-    this.adresse = adresse;
-    this.date_creation = date_creation;
-    this.description = description;
-    this.equipments = equipments;
-    this.espaces = espaces;
+  export interface CoWorkspace {
+    idCoWorkspace?: number;
+    nom: string;
+    ville: string;
+    adresse: string;
+    dateCreation: string; // Utiliser camelCase pour correspondre au backend
+    description: string;
+    image?: string;
+    equipments: Equipment[]; // Liste des noms d'équipements
+    espaces: Espace[]; 
+    partner:User// Liste des espaces
   }
-}
+
+

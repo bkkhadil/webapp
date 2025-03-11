@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-
-import { HttpClientModule } from '@angular/common/http';
+import { JwtInterceptor } from '../app/core/jwt.interceptor';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { DatePipe } from '@angular/common'; 
 import { AppComponent } from './app.component';
@@ -13,10 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { ContactComponent } from './shared/components/contact/contact.component';
 import { DetailsComponent } from './core/components/details/details.component';
-import { LoginUtilisateurComponent } from './core/components/login-utilisateur/login-utilisateur.component';
-import { LoginPartenaireComponent } from './core/components/login-partenaire/login-partenaire.component';
-import { RegistrePartenaireComponent } from './core/components/registre-partenaire/registre-partenaire.component';
-import { RegistreUtilisateurComponent } from './core/components/registre-utilisateur/registre-utilisateur.component';
+
 import { GoogleMapsModule } from '@angular/google-maps';
 import { FormulaireComponent } from './core/components/formulaire/formulaire.component';
 import { CrudresponsableComponent } from './core/components/crudresponsable/crudresponsable.component';
@@ -28,6 +25,19 @@ import { CoworkspaceFormComponent } from './core/components/coworkspace-form/cow
 import { EspaceFormComponent } from './core/components/espace-form/espace-form.component';
 import { CommonModule } from '@angular/common';
 
+import { UpdateCoworkzoneComponent } from './core/components/update-coworkzone/update-coworkzone.component';
+import { UpdateEspaceComponent } from './core/components/update-espace/update-espace.component';
+
+import { PartnerRegisterComponent } from './auth/partner-register/partner-register.component';
+import { UserRegisterComponent } from './auth/user-register/user-register.component';
+import { PartnerAuthComponent } from './auth/partner-auth/partner-auth.component';
+import { UserAuthComponent } from './auth/user-auth/user-auth.component';
+
+import { ProfileComponent } from './auth/profile/profile.component';
+import { ServicesComponent } from './core/components/services/services.component';
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,10 +47,7 @@ import { CommonModule } from '@angular/common';
     FooterComponent,
     ContactComponent,
     DetailsComponent,
-    LoginUtilisateurComponent,
-    LoginPartenaireComponent,
-    RegistrePartenaireComponent,
-    RegistreUtilisateurComponent,
+   
     FormulaireComponent,
     CrudresponsableComponent,
   
@@ -50,8 +57,22 @@ import { CommonModule } from '@angular/common';
     PhotoComponent,
     CoworkspaceFormComponent,
     EspaceFormComponent,
+   
+    UpdateCoworkzoneComponent,
+         UpdateEspaceComponent,
+         
+         PartnerRegisterComponent,
+         UserRegisterComponent,
+         PartnerAuthComponent,
+         UserAuthComponent,
+       
+         ProfileComponent,
+                  ServicesComponent,
+     
+   
   ],
   imports: [
+    RouterModule.forRoot([]),
     BrowserModule,
     HttpClientModule,
     RouterModule,
@@ -62,7 +83,7 @@ import { CommonModule } from '@angular/common';
     CommonModule,
   ],
   providers: [
-    DatePipe, // Ajoutez DatePipe ici
+    DatePipe,  { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true } 
   ],
   bootstrap: [AppComponent]
 })

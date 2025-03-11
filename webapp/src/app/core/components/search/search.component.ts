@@ -10,83 +10,59 @@ import { SearchService } from '../../../services/search.service';
 })
 export class SearchComponent implements OnInit {
   results: any[] = [];
-  espaces: any[] = [];  // Propriété ajoutée pour éviter l'erreur dans le template
   selectedCity: string = '';
-  selectedType: string = '';
   searchQuery: string = '';
 
   constructor(private route: ActivatedRoute, private router: Router, private searchService: SearchService) {}
 
-  ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.selectedCity = params['city'] || '';
-      this.selectedType = params['type'] || '';
-      this.searchQuery = params['query'] || '';
+// search.component.ts (corrigé)
+ngOnInit(): void {
+  this.route.queryParams.subscribe(params => {
+    this.selectedCity = params['city'] || '';
+    this.searchQuery = params['searchQuery'] || '';
+    this.fetchResults();
+  });
+}
 
-      this.fetchResults();
-    });
-  }
-
-  fetchResults(): void {
-    this.searchService.search(this.selectedCity, this.selectedType, this.searchQuery)
-      .subscribe(results => {
-        this.results = results;
-        this.espaces = results;  // Correction pour que `espaces` soit assigné
+fetchResults(): void {
+  this.searchService.search(this.selectedCity, this.searchQuery).subscribe(
+    (results) => {
+      console.log('Résultats API:', results);
+      this.results = results.map((coworspace) => ({
+        ...coworspace,
+        id: coworspace.idCoWorkspace, // Mapper idCoWorkspace vers id
+      }));
+      // Vérifiez que chaque coworspace a un ID
+      this.results.forEach((coworspace) => {
+        console.log('Coworkspace ID:', coworspace.id);
       });
-  }
+    },
+    (error) => {
+      console.error('Erreur API:', error);
+    }
+  );
+}
 
-  search(): void {
-    this.router.navigate(['partner/search'], {
+  search() {
+    this.router.navigate(['/search'], {
       queryParams: {
         city: this.selectedCity,
-        type: this.selectedType,
-        query: this.searchQuery
+        searchQuery: this.searchQuery // Remplacez "query" par "searchQuery"
       }
     });
-  }
+  } 
 
-  // Optimisation de la boucle *ngFor
+
+
   trackByNom(index: number, item: any): string {
-    return item.nom;
+    return item.id; // Utilisez une propriété unique comme "id" au lieu de "nom"
   }
-  
-
-
-
-
-
-
-  
-  
-    goToDetails(espaceId: string) {
-      this.router.navigate(['partner/details', espaceId]);
+  goToDetails(espaceId: number) {
+    console.log('ID du coworking space:', espaceId); // Vérifiez la valeur dans la console
+    if (espaceId === undefined) {
+      console.error('ID du coworking space non défini.');
+      return;
     }
-  
-  
-
-
-  
-
- 
-
-
-
-
-    fetchResultss(): void {
-      this.searchService.search(this.selectedCity, this.selectedType, this.searchQuery)
-        .subscribe(results => {
-          this.results = results;
-          this.espaces = results;  // Correction pour que `espaces` soit assigné
-        });
-    }
-    
-
-
-
-
-
-
-
-
-
+    this.router.navigate(['user/details', espaceId.toString()]);
+  }
 }

@@ -2,22 +2,24 @@
 <section class="py-12 bg-white md:py-16 dark:bg-gray-900 antialiased">
   <div class="max-w-screen-xl px-6 mx-auto 2xl:px-0">
     <div class="lg:grid lg:grid-cols-2 lg:gap-12 xl:gap-16">
+     
       <!-- Colonne gauche : Images -->
       <div>
         <div class="shrink-0 max-w-md lg:max-w-lg mx-auto mb-6">
+          
           <img
             class="w-full rounded-lg shadow-xl transition-transform duration-300 hover:scale-105"
-            [src]="selectedImage || espace?.image"
+            [src]="selectedImage"
             [alt]="espace?.nom"
           />
         </div>
         <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4 mt-4">
-          <div *ngFor="let image of espace?.images" class="cursor-pointer">
-            <img
-              class="h-auto max-w-full rounded-lg shadow-md hover:scale-105 transition-transform duration-300 ease-in-out"
+          <div *ngFor="let image of images" class="cursor-pointer">
+            <img 
+              class="h-24 w-full object-cover rounded-lg border-2 border-transparent hover:border-blue-500"
               [src]="image"
               [alt]="espace?.nom"
-              (click)="changeImage(image)"
+              (click)="selectedImage = image"
             />
           </div>
         </div>
@@ -36,15 +38,16 @@
         </p>
 
         <!-- Options disponibles -->
-        <div *ngIf="espace?.option?.length > 0" class="mt-6">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Options disponibles :</h3>
-          <ul class="grid grid-cols-2 gap-4 text-gray-700 dark:text-gray-300">
-            <li *ngFor="let opt of espace?.option" class="flex items-center space-x-2">
-              <span [innerHTML]="getOptionIcon(opt)"></span>
-              <span>{{ opt }}</span>
-            </li>
-          </ul>
-        </div>
+    
+<div *ngIf="espace?.equipments?.length > 0" class="mt-6">
+  <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Équipements disponibles :</h3>
+  <ul class="grid grid-cols-2 gap-4 text-gray-700 dark:text-gray-300">
+    <li *ngFor="let equipment of espace?.equipments" class="flex items-center space-x-2">
+      <span [innerHTML]="getOptionIcon(equipment.nom)"></span>
+      <span>{{ equipment.nom }}</span>
+    </li>
+  </ul>
+</div>
 
         <hr class="my-6 border-gray-200 dark:border-gray-800" />
         <p class="text-gray-500 dark:text-gray-400">
@@ -56,49 +59,90 @@
 </section>
 
 <!-- Section des espaces disponibles -->
-<section *ngIf="espace" class="py-16 px-6 lg:px-20 bg-gray-50 dark:bg-gray-800">
-  <div class="text-center mb-10">
-    <h3 class="text-3xl font-bold text-gray-900 dark:text-white">Espaces disponibles</h3>
-    <p class="mt-4 text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-      Notre espace de coworking comprend plusieurs zones adaptées à différents besoins. Vous y trouverez une variété d'espaces conçus pour favoriser la productivité, la collaboration et le confort.
-    </p>
-  </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
-    <div *ngFor="let key of getEspaceDisponibleKeys()" class="bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-700 dark:border-gray-600">
-      <a href="#">
-        <img class="p-6 rounded-t-lg w-full" [src]="espace.espace_disponible[key]?.image" alt="{{ key }} image" />
-      </a>
-      <div class="px-6 pb-6">
-        <h5 class="text-xl font-semibold text-gray-900 dark:text-white">{{ key }}</h5>
-        <ul class="mt-3 space-y-2 text-gray-700 dark:text-gray-300">
-          <li><i class="ph ph-users mr-2"></i> Nombre de salles : {{ espace.espace_disponible[key]?.nbredesalledispo }}</li>
-          <li><i class="ph ph-door-open mr-2"></i> Capacité : {{ espace.espace_disponible[key]?.capacite }}</li>
-        </ul>
-        <div class="flex items-center justify-between mt-6">
-          <span class="text-2xl font-bold text-gray-900 dark:text-white">{{ espace.espace_disponible[key]?.prixparjour || espace.espace_disponible[key]?.prix }} DT</span>
-          <a [routerLink]="['/user/espace', espace?.id, key]" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Réserver</a>
+<section class="py-16 px-6 lg:px-20 bg-gray-50 dark:bg-gray-800">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6">
+    <div 
+      *ngFor="let key of getGroupedEspaceKeys()" 
+      class="bg-white dark:bg-gray-700 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 dark:border-gray-600 flex flex-col mx-2"
+    >
+      <!-- Image Section -->
+      <div class="relative aspect-video overflow-hidden rounded-t-xl px-4 pt-4">
+        <img 
+          class="w-full h-full object-cover rounded-lg" 
+          [src]="groupedEspaces[key].image" 
+          [alt]="'Image de ' + key" 
+        />
+      </div>
+  
+      <!-- Content Section -->
+      <div class="p-6 flex-1 flex flex-col px-6">
+        <!-- Title -->
+        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          {{ key }}
+        </h3>
+  
+        <!-- Description -->
+        <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3 px-1">
+          {{ groupedEspaces[key].description }}
+        </p>
+  
+        <!-- Features List -->
+        <div class="space-y-3 mb-6 flex-1 px-2">
+          <div class="flex items-center text-gray-700 dark:text-gray-400">
+            <i class="ph ph-door-open text-lg mr-3 w-6"></i>
+            <span>{{ groupedEspaces[key].count }} salles disponibles</span>
+          </div>
+          
+          <div class="flex items-center text-gray-700 dark:text-gray-400">
+            <i class="ph ph-users text-lg mr-3 w-6"></i>
+            <span>Capacité : {{ groupedEspaces[key].capacite }} personnes</span>
+          </div>
+        </div>
+  
+        <!-- Price & CTA -->
+        <div class="mt-auto px-2">
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-lg font-semibold text-gray-900 dark:text-white">
+              {{ groupedEspaces[key].prix }} DT
+            </span>
+            <span class="text-sm text-gray-500">/jour</span>
+          </div>
+  
+          <a 
+            [routerLink]="['/user/espace', groupedEspaces[key].idEspace]"
+            class="w-full inline-flex justify-center items-center px-6 py-3 font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors duration-200"
+          >
+            Réserver maintenant
+            <i class="ph ph-arrow-right ml-2"></i>
+          </a>
         </div>
       </div>
     </div>
   </div>
 </section>
-
 <!-- Google Maps Iframe -->
 <div class="mt-8 flex justify-center">
   <div class="w-full max-w-6xl">
     <p class="text-center text-gray-700 dark:text-gray-300 mb-4">
       Pour connaître l'emplacement exact de notre espace de coworking, suivez cette carte. Elle vous guidera directement vers nous et vous permettra de découvrir nos installations en toute simplicité.
     </p>
-    <iframe
-      [src]="mapsURL"
-      width="100%"
-      height="550"
-      class="rounded-lg shadow-lg"
-      frameborder="0"
-      allowfullscreen
-      webkitallowfullscreen
-      mozallowfullscreen
-    ></iframe>
-  </div>
+   
+
+    <div *ngIf="mapsURL" class="mt-8 flex justify-center">
+      <div class="w-full max-w-6xl">
+        <iframe
+          [src]="mapsURL"
+          width="100%"
+          height="550"
+          class="rounded-lg shadow-lg"
+          style="border:0"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+    </div>
+ 
 </div>

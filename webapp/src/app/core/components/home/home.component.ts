@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { SearchService } from '../../../services/search.service';
 
 @Component({
   selector: 'app-home',
@@ -9,19 +10,20 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent {
   selectedCity: string = '';
-  selectedType: string = '';
   searchQuery: string = '';
+  coworkspaces: any[] = [];
 
-  constructor(private router: Router) {}
+  constructor(private searchService: SearchService,private router: Router) {}
 
-  search(): void {
-    this.router.navigate(['user-search'], {
+  
+  search() {
+    console.log('Méthode search() appelée'); // Vérifiez ce message dans la console
+    this.router.navigate(['/search'], {
       queryParams: {
         city: this.selectedCity,
-        type: this.selectedType,
-        query: this.searchQuery
+        searchQuery: this.searchQuery,
       }
     });
   }
-}
 
+}

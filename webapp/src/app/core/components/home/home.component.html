@@ -11,52 +11,37 @@
             <br>
             <br>
   
-            
-            <!-- Barre de recherche sous la description -->
-            <form class="max-w-lg" (submit)="search()">
+            <form class="max-w-lg" (ngSubmit)="search()">
                 <div class="flex items-center shadow-lg border rounded-lg overflow-hidden">
-                    <label for="city-dropdown" class="sr-only">Sélectionner une ville</label>
-                    <select
-                        id="city-dropdown"
-                        [(ngModel)]="selectedCity" name="city"class="shrink-0 py-2.5 px-4 text-sm text-brown-900 bg-beige-100 border-r border-oak-300 rounded-s-lg focus:outline-none focus:ring-brown-500 focus:border-brown-500 dark:bg-gray-800 dark:text-beige-200 dark:border-brown-600"
-
-                    >
-                        <option value="">ville</option>
-                        <option value="monastir">Monastir</option>
-                        <option value="sousse">Sousse</option>
-                        <option value="gabes">Gabès</option>
-                        <option value="sfax">Sfax</option>
-                    </select>
-  
-                    <label for="type-dropdown" class="sr-only">Sélectionner un type</label>
-                   <!--<select
-                        id="type-dropdown" [(ngModel)]="selectedType" name="type"
-                        class="shrink-0 py-2.5 px-4 text-sm text-gray-900 bg-gray-100 border-r border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
-                    >
-                        <option value="">Type</option>
-                        <option value="bureau">Bureau privé</option>
-                        <option value="espacevert">Espace Vert</option>
-                        <option value="salle">Salle de Réunion</option>
-                        <option value="salle">Salle de Formaton</option>
-                        <option value="salle">Bureau ouvert</option>
-                    </select>-->
-  
-                    <input
-                        type="text" [(ngModel)]="searchQuery" name="search"
-                        class="flex-grow p-2.5 text-sm text-gray-900 bg-white border-none focus:ring-0 focus:outline-none dark:bg-gray-700 dark:text-white"
-                        placeholder="Rechercher"
-                    />
-  
-                    <button type="submit"
-              class="flex items-center py-2.5 px-4 bg-blue-600 text-white text-sm font-medium rounded-e-lg hover:bg-blue-700">
-              <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-              </svg>
-              <span class="sr-only">Rechercher</span>
-            </button>
+                  <label for="city-dropdown" class="sr-only">Sélectionner une ville</label>
+                  <select
+                    id="city-dropdown"
+                    [(ngModel)]="selectedCity"
+                    name="city"
+                    class="shrink-0 py-2.5 px-4 text-sm text-brown-900 bg-beige-100 border-r border-oak-300 rounded-s-lg focus:outline-none focus:ring-brown-500 focus:border-brown-500 dark:bg-gray-800 dark:text-beige-200 dark:border-brown-600">
+                    <option value="">Ville</option>
+                    <option value="monastir">Monastir</option>
+                    <option value="sousse">Sousse</option>
+                    <option value="gabes">Gabès</option>
+                    <option value="sfax">Sfax</option>
+                  </select>
+              
+                  <input
+                    type="text"
+                    [(ngModel)]="searchQuery"
+                    name="search"
+                    class="flex-grow p-2.5 text-sm text-gray-900 bg-white border-none focus:ring-0 focus:outline-none dark:bg-gray-700 dark:text-white"
+                    placeholder="Rechercher"
+                  />
+              
+                  <button type="submit" class="flex items-center py-2.5 px-4 bg-blue-600 text-white text-sm font-medium rounded-e-lg hover:bg-blue-700">
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    </svg>
+                    <span class="sr-only">Rechercher</span>
+                  </button>
                 </div>
-            </form>
+              </form>
             <section class="bg-white dark:bg-gray-900">
                 <div class="py-8 lg:py-16 mx-auto max-w-screen-xl px-4">
                     <h2 class="mb-8 lg:mb-16 text-3xl font-extrabold tracking-tight leading-tight text-center text-gray-900 dark:text-white md:text-4xl"></h2>

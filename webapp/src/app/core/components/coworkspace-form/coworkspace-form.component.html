@@ -5,7 +5,7 @@
 </div>
 
 <form [formGroup]="coworkspaceForm" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto px-4 mt-12">
-  <!-- Coworking Space Details -->
+  <!-- Détails du CoWorkspace -->
   <div class="grid gap-4 mb-4 sm:grid-cols-2">
     <!-- Nom du coworking space -->
     <div>
@@ -68,15 +68,16 @@
   </div>
 
   <!-- Équipements disponibles -->
-  <div class="mt-4">
-    <label class="block text-sm font-medium text-gray-700 dark:text-white">Équipements disponibles :</label>
-    <div class="grid grid-cols-2 gap-4 mt-2">
-      <label *ngFor="let eq of equipmentOptions" class="flex items-center gap-2">
-        <input type="checkbox" [(ngModel)]="eq.selected" [ngModelOptions]="{ standalone: true }" class="accent-primary-500">
-        <span>{{ eq.name }}</span>
-      </label>
-    </div>
+<!-- Équipements disponibles -->
+<div class="mt-4">
+  <label class="block text-sm font-medium text-gray-700 dark:text-white">Équipements disponibles :</label>
+  <div class="grid grid-cols-2 gap-4 mt-2">
+    <label *ngFor="let eq of equipmentOptions" class="flex items-center gap-2">
+      <input type="checkbox" [(ngModel)]="eq.selected" [ngModelOptions]="{ standalone: true }" class="accent-primary-500">
+      <span>{{ eq.name }}</span>
+    </label>
   </div>
+</div>
 
   <!-- Description -->
   <div class="mt-6">
@@ -90,52 +91,35 @@
       <span *ngIf="coworkspaceForm.get('description')?.errors?.['required']">La description est obligatoire.</span>
     </div>
   </div>
-
-  <!-- Espaces Table -->
-  <div class="mx-auto max-w-screen-2xl px-4 lg:px-12 flex justify-center">
-    <p class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-4 text-center max-w-2xl">
-      Dans ce tableau, vous trouverez les espaces déjà ajoutés à cet espace de travail.
-    </p>
+<!-- Ajouter cette section pour l'image -->
+<div class="mt-6">
+  <label class="block text-sm font-medium text-gray-700 dark:text-white">
+    <i class="ph ph-images text-gray-500 mr-2"></i> Image du coworking space (obligatoire)
+  </label>
+  
+  <label for="dropzone-file" class="mt-2 flex justify-center items-center h-40 border-2 border-dashed rounded-lg cursor-pointer dark:bg-gray-700">
+    <div class="text-center">
+      <svg class="w-10 h-10 text-gray-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+      </svg>
+      <p class="text-sm text-gray-500">Cliquez pour télécharger ou glissez-déposez</p>
+      <p class="text-xs text-gray-400">Formats acceptés : SVG, PNG, JPG, GIF (MAX. 800x400px)</p>
+    </div>
+    <input id="dropzone-file" type="file" class="hidden" accept=".svg, .png, .jpg, .gif" (change)="onFileChange($event)" required>
+  </label>
+  <!-- Message d'erreur -->
+  <div *ngIf="coworkspaceForm.get('image')?.invalid && (coworkspaceForm.get('image')?.dirty || coworkspaceForm.get('image')?.touched)"
+    class="text-red-500 text-sm mt-1">
+    <span *ngIf="coworkspaceForm.get('image')?.errors?.['required']">L'image est obligatoire.</span>
   </div>
+</div>
 
-  <div class="overflow-x-auto mb-6">
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-        <tr>
-          <th scope="col" class="p-4">Type d'espace</th>
-          <th scope="col" class="p-4">Nombre d’espaces</th>
-          <th scope="col" class="p-4">Capacité</th>
-          <th scope="col" class="p-4">Prix par mois</th>
-          <th scope="col" class="p-4">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let espace of coworkspaceForm.get('espaces')?.value" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-          <td class="p-4">{{ espace.type }}</td>
-          <td class="p-4">{{ espace.nbretype }}</td>
-          <td class="p-4">{{ espace.capacite }}</td>
-          <td class="p-4">{{ espace.prix_par_mois }}</td>
-          <td class="px-4 py-3 flex justify-center space-x-2">
-            <button class="flex items-center gap-1 py-2 px-3 text-sm font-medium text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-600 hover:text-white dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-white transition">
-              <i class="ph ph-pencil-simple"></i> Modifier
-            </button>
-            <button class="flex items-center gap-1 py-2 px-3 text-sm font-medium text-red-600 border border-red-600 rounded-lg hover:bg-red-600 hover:text-white dark:border-red-400 dark:text-red-400 dark:hover:bg-red-400 dark:hover:text-white transition">
-              <i class="ph ph-trash"></i> Supprimer
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Form Actions -->
+  <!-- Actions du formulaire -->
   <div class="mt-6 flex gap-4">
     <button type="submit" [disabled]="coworkspaceForm.invalid"
       class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700">
       Soumettre
     </button>
-    <button (click)="onAddSpace()" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-      Ajouter Autre Espace
-    </button>
+   
   </div>
 </form>

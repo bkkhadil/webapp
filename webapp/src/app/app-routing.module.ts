@@ -1,13 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './core/components/home/home.component';
-import { LoginPartenaireComponent } from './core/components/login-partenaire/login-partenaire.component';
 import { SearchComponent } from './core/components/search/search.component';
 import { ContactComponent } from './shared/components/contact/contact.component';
 import { DetailsComponent } from './core/components/details/details.component';
-import { LoginUtilisateurComponent } from './core/components/login-utilisateur/login-utilisateur.component';
-import { RegistrePartenaireComponent } from './core/components/registre-partenaire/registre-partenaire.component';
-import { RegistreUtilisateurComponent } from './core/components/registre-utilisateur/registre-utilisateur.component';
 import { FormulaireComponent } from './core/components/formulaire/formulaire.component';
 import { CrudresponsableComponent } from './core/components/crudresponsable/crudresponsable.component';
 import { ListeReservationComponent } from './core/components/liste-reservation/liste-reservation.component';
@@ -15,27 +11,109 @@ import { HistoriqueUtilisateurComponent } from './core/components/historique-uti
 import { PhotoComponent } from './core/components/photo/photo.component';
 import { CoworkspaceFormComponent } from './core/components/coworkspace-form/coworkspace-form.component';
 import { EspaceFormComponent } from './core/components/espace-form/espace-form.component';
+import { UpdateEspaceComponent } from './core/components/update-espace/update-espace.component';
+import { UpdateCoworkzoneComponent } from './core/components/update-coworkzone/update-coworkzone.component';
+import { AuthGuard } from '../app/guards/auth.guard';
+import { Role } from '../models/role.model';
+import { UserAuthComponent } from './auth/user-auth/user-auth.component';
+import { PartnerRegisterComponent } from './auth/partner-register/partner-register.component';
+import { UserRegisterComponent } from './auth/user-register/user-register.component';
+import { PartnerAuthComponent } from './auth/partner-auth/partner-auth.component';
+import { NoAuthGuard } from './guards/no-auth.guard';
+import { ProfileComponent } from './auth/profile/profile.component';
+import { ServicesComponent } from './core/components/services/services.component';
 
 
-const routes: Routes =  [
-  { path: '', component: HomeComponent },
-  
-  { path: 'user-sigin-in', component: LoginUtilisateurComponent },
-  { path: 'partner-sign-in', component:  LoginPartenaireComponent },
-  { path: 'user-search', component: SearchComponent },
-  { path: 'partner-sign-up', component:  RegistrePartenaireComponent },
-  { path: 'user-sign-up', component:  RegistreUtilisateurComponent },
-  { path: 'user/contact', component: ContactComponent },
+const routes: Routes = [
+
   { path: 'user/photo', component: PhotoComponent },
-  { path: 'partner/details/:id', component: DetailsComponent },
-  { path: 'user/historique', component: HistoriqueUtilisateurComponent },
-  { path: 'user/espace/:id/:nomEspace', component: FormulaireComponent },
-  { path: 'partner/crud', component: CrudresponsableComponent },
-  { path: 'coworkspaces', component: CoworkspaceFormComponent },
-  { path: 'partner/autorisation', component: ListeReservationComponent },
-  { path: 'partner/espace', component: EspaceFormComponent },
-  { path: 'partner/coworkspace', component: CoworkspaceFormComponent },
+  {
+    path: 'register/partner',
+    component: PartnerRegisterComponent,
+    canActivate: [NoAuthGuard], // Appliquer le garde ici
+  },
+  {
+    path: 'services',
+    component: ServicesComponent,
+  
+  },
+  
+ 
+  {
+    path: 'register/user',
+    component: UserRegisterComponent,
+    canActivate: [NoAuthGuard], // Appliquer le garde ici
+  },
+  {
+    path: 'login/partner',
+    component: PartnerAuthComponent,
+    canActivate: [NoAuthGuard], // Appliquer le garde ici
+  },
+  {
+    path: 'login/user',
+    component: UserAuthComponent,
+    canActivate: [NoAuthGuard], // Appliquer le garde ici
+  },
+  { path: '', component: HomeComponent },
+  { path: 'search', component: SearchComponent },
+  { path: 'contact', component: ContactComponent },
+ 
+  { 
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: 'user',
+    canActivate: [AuthGuard],
+    data: { roles: [Role.USER] },
+    children: [
+      { path: 'home', component: HomeComponent },
+     { 
+        path: 'profile',
+        component: ProfileComponent,
+        canActivate: [AuthGuard]
+      },
+     
+      
+      { path: 'historique', component: HistoriqueUtilisateurComponent },
+      {
+        path: 'espace/:espaceId', // Suppression du :nomEspace inutilisé
+        component: FormulaireComponent 
+      },
+      { path: 'details/:id', component: DetailsComponent }
+    ]
+  },
 
+  // Partner-protected routes
+  {
+    path: 'partner',
+    canActivate: [AuthGuard],
+    data: { roles: [Role.PARTNER] },
+    children: [
+      { path: 'crud', component: CrudresponsableComponent },
+      { path: 'autorisation', component: ListeReservationComponent },
+      { 
+        path: 'espace', // Doit correspondre au paramètre capturé
+        component:  EspaceFormComponent
+      },
+   
+     { 
+        path: 'espace/:id', // Ajout du paramètre d'ID
+        component: EspaceFormComponent
+      },
+      { path: 'coworkspace', component: CoworkspaceFormComponent },
+      { path: 'updatecoworkzone/:id', component: UpdateCoworkzoneComponent },
+      { 
+        path: 'update-espace/:coworkspaceId/:espaceId',
+        component: UpdateEspaceComponent 
+      },
+      
+    ]
+  },
+
+ 
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

@@ -1,0 +1,106 @@
+
+
+<div class="mx-auto max-w-screen-2xl px-4 lg:px-12 flex justify-center">
+    <p class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-4 text-center max-w-2xl">
+      Modifier les détails de votre espace
+    </p>
+  </div>
+  
+  <form [formGroup]="espaceForm" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto px-4 mt-12">
+    <!-- Section Principale -->
+    <div class="grid gap-4 mb-4 sm:grid-cols-2">
+      
+      <!-- Type d'espace -->
+      <div class="col-span-2">
+        <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <i class="ph ph-layout"></i> Type d'espace
+        </label>
+        <select id="type" formControlName="type"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+          <option *ngFor="let type of spaceTypes" [value]="type">{{ type }}</option>
+        </select>
+        <div *ngIf="espaceForm.get('type')?.invalid && espaceForm.get('type')?.touched" 
+             class="text-red-500 text-sm mt-1">
+          Le type d'espace est requis
+        </div>
+      </div>
+  
+      <!-- Nombre d'espaces -->
+      <div>
+        <label for="nbretype" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <i class="ph ph-stack"></i> Quantité
+        </label>
+        <input type="number" id="nbretype" formControlName="nbretype" min="1"
+               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+        <div *ngIf="espaceForm.get('nbretype')?.errors" class="text-red-500 text-sm mt-1">
+          <div *ngIf="espaceForm.get('nbretype')?.hasError('required')">Ce champ est obligatoire</div>
+          <div *ngIf="espaceForm.get('nbretype')?.hasError('min')">Minimum 1 espace</div>
+        </div>
+      </div>
+  
+      <!-- Capacité -->
+      <div>
+        <label for="capacite" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <i class="ph ph-users"></i> Capacité
+        </label>
+        <input type="number" id="capacite" formControlName="capacite" min="1"
+               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+        <div *ngIf="espaceForm.get('capacite')?.errors" class="text-red-500 text-sm mt-1">
+          <div *ngIf="espaceForm.get('capacite')?.hasError('required')">Ce champ est obligatoire</div>
+          <div *ngIf="espaceForm.get('capacite')?.hasError('min')">Minimum 1 personne</div>
+        </div>
+      </div>
+  
+      <!-- Prix par mois -->
+      <div>
+        <label for="prix" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <i class="ph ph-currency-eur"></i> Prix/mois
+        </label>
+        <input type="number" id="prix" formControlName="prix_par_mois" min="0" step="10"
+               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+        <div *ngIf="espaceForm.get('prix_par_mois')?.errors" class="text-red-500 text-sm mt-1">
+          <div *ngIf="espaceForm.get('prix_par_mois')?.hasError('required')">Ce champ est obligatoire</div>
+          <div *ngIf="espaceForm.get('prix_par_mois')?.hasError('min')">Le prix ne peut pas être négatif</div>
+        </div>
+      </div>
+   <!-- Description -->
+   <div class="mt-6">
+    <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+    <textarea id="description" formControlName="description" rows="4"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"></textarea>
+  </div>
+      <!-- Upload d'image -->
+      <div class="col-span-2 mt-4">
+        <label class="block text-sm font-medium text-gray-700 dark:text-white mb-2">
+          <i class="ph ph-image"></i> Image de l'espace
+        </label>
+        <div class="flex items-center justify-center w-full">
+          <label class="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer dark:bg-gray-700 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500">
+            <div class="flex flex-col items-center justify-center pt-5 pb-6 text-center" *ngIf="!espaceForm.get('imageData')?.value">
+              <i class="ph ph-cloud-arrow-up text-4xl text-gray-400 mb-2"></i>
+              <p class="text-sm text-gray-500 dark:text-gray-400">Glissez-déposez votre image ici</p>
+              <p class="text-xs text-gray-400">Formats supportés: PNG, JPG, JPEG (Max 2MB)</p>
+            </div>
+            <img *ngIf="espaceForm.get('imageData')?.value" 
+                 [src]="espaceForm.get('imageData')?.value" 
+                 class="h-60 object-cover rounded-lg"
+                 alt="Prévisualisation de l'espace">
+            <input id="image-upload" type="file" accept="image/*" class="hidden" (change)="onFileChange($event)">
+          </label>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Boutons d'action -->
+    <div class="mt-8 flex justify-end gap-4">
+      <button type="button" (click)="onCancel()"
+              class="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 px-5 py-2.5 rounded-lg text-sm font-medium dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700">
+        Annuler
+      </button>
+      
+      <button type="submit" [disabled]="espaceForm.invalid"
+              class="text-white bg-blue-600 hover:bg-blue-700 px-5 py-2.5 rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed">
+        <i class="ph ph-floppy-disk"></i> Enregistrer
+      </button>
+    </div>
+  </form>

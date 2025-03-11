@@ -8,33 +8,60 @@
 </div>
 
 <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-  <div class="relative overflow-x-auto shadow-xl sm:rounded-xl bg-white dark:bg-gray-800 mt-8 mx-4 lg:mx-16 p-4">
+  <div *ngIf="loading" class="text-center py-8">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+    <p class="mt-4 text-gray-600 dark:text-gray-400">Chargement des réservations...</p>
+  </div>
+
+  <div *ngIf="!loading" class="relative overflow-x-auto shadow-xl sm:rounded-xl bg-white dark:bg-gray-800 mt-8 mx-4 lg:mx-16 p-4">
     <table class="w-full text-sm text-left rtl:text-right text-gray-600 dark:text-gray-300">
-      <!-- Table Header -->
       <thead class="text-xs text-gray-700 uppercase bg-blue-100 dark:bg-blue-900 dark:text-gray-300">
         <tr>
-          <th scope="col" class="px-8 py-4 font-semibold">Nom de l'espace</th>
-          <th scope="col" class="px-8 py-4 font-semibold">Type de l'espace</th>
-          <th scope="col" class="px-8 py-4 font-semibold">Date</th>
-          <th scope="col" class="px-8 py-4 font-semibold">Horaire</th>
-          <th scope="col" class="px-8 py-4 font-semibold">Nombre d'heures</th>
-          <th scope="col" class="px-8 py-4 font-semibold">Nombre de places</th>
-          <th scope="col" class="px-8 py-4 font-semibold">État</th>
+         
+          <th scope="col" class="px-8 py-4 font-semibold">Type d'espace</th>
+          <th scope="col" class="px-8 py-4 font-semibold">Dates</th>
+          <th scope="col" class="px-8 py-4 font-semibold">Places</th>
+          <th scope="col" class="px-8 py-4 font-semibold">Statut</th>
         </tr>
       </thead>
 
-      <!-- Table Body -->
       <tbody>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-blue-50 dark:hover:bg-blue-600">
-          <td class="px-8 py-4 font-medium text-gray-900 dark:text-white">Preface</td>
-          <td class="px-8 py-4">Espace vert</td>
-          <td class="px-8 py-4">12-10-2001</td>
-          <td class="px-8 py-4">12:00</td>
-          <td class="px-8 py-4">4</td>
-          <td class="px-8 py-4">4</td>
-          <td class="px-8 py-4">En attente</td>
+        <tr *ngFor="let res of reservations" 
+            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-blue-50 dark:hover:bg-blue-600/20 transition-colors">
+         <!-- <td class="px-8 py-4 font-medium text-gray-900 dark:text-white">
+            {{ res?.espace?.coWorkspace?.nom || 'Non disponible' }}
+          </td>-->
+          <td class="px-8 py-4">
+            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
+              {{ res?.espace?.type }}
+            </span>
+          </td>
+          <td class="px-8 py-4">
+            {{ res.dateStart | date:'dd/MM/yyyy' }} - {{ res.dateEnd | date:'dd/MM/yyyy' }}
+          </td>
+          <td class="px-8 py-4 font-semibold">
+            {{ res.nbrePlaces }}
+          </td>
+          <td class="px-8 py-4">
+            <span [ngClass]="{
+              'bg-green-100 text-green-800': res.status === 'ACCEPTED',
+              'bg-yellow-100 text-yellow-800': res.status === 'PENDING',
+              'bg-red-100 text-red-800': res.status === 'REJECTED'
+            }" class="px-3 py-1 rounded-full text-sm dark:bg-opacity-30 dark:text-opacity-80">
+              {{ res.status === 'ACCEPTED' ? 'Confirmée' : 
+                 res.status === 'PENDING' ? 'En attente' : 'Refusée' }}
+            </span>
+          </td>
         </tr>
-        <!-- Additional Rows can be added here -->
+
+        <tr *ngIf="reservations.length === 0">
+          <td colspan="5" class="px-8 py-6 text-center text-gray-500 dark:text-gray-400">
+            <div class="flex flex-col items-center justify-center">
+              <i class="ph ph-clock-clockwise text-4xl text-gray-400 mb-4"></i>
+              Aucune réservation trouvée
+            </div>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>

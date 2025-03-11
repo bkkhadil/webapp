@@ -1,66 +1,86 @@
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg bg-white dark:bg-gray-800 mt-8 mx-16 lg:mx-32">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <!-- Table Header -->
-        <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3 font-medium text-gray-900 dark:text-white">
-                    Nom de l'espace de coworking
+<div class="text-center mt-12">
+    <h1 class="mb-4 text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+        Nous espérons que votre expérience <br> avec le coworking a été très agréable.
+      </h1>
+    <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
+        Ici, vous avez la possibilité d'accepter ou de refuser la réservation effectuée pour votre espace de coworking .
+    </p>
+  </div>
+<div class="relative overflow-x-auto shadow-lg rounded-xl bg-white dark:bg-gray-800 mt-8 mx-4 sm:mx-8 lg:mx-16">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-600 dark:text-gray-300">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
+            <tr class="border-b border-gray-200 dark:border-gray-600">
+                <th scope="col" class="px-6 py-4 font-bold text-gray-600 dark:text-white">
+                    Type
                 </th>
-                <th scope="col" class="px-6 py-3 font-medium text-gray-900 dark:text-white">
-                    Type de l'espace
+                <th scope="col" class="px-6 py-4 font-semibold text-gray-600 dark:text-white">
+                    Nom
                 </th>
-                <th scope="col" class="px-6 py-3 font-medium text-gray-900 dark:text-white">
-                    Nom de l'utilisateur
+                <th scope="col" class="px-6 py-4 font-semibold text-gray-600 dark:text-white">
+                    Prénom
                 </th>
-                <th scope="col" class="px-6 py-3 font-medium text-gray-900 dark:text-white">
-                    Prenom de l'utilisateur
+                <th scope="col" class="px-6 py-4 font-semibold text-gray-600 dark:text-white">
+                    Places
                 </th>
-                <th scope="col" class="px-6 py-3 font-medium text-gray-900 dark:text-white">
-                    Nombre de Places
-                </th>
-                <th scope="col" class="px-6 py-3 font-medium text-gray-900 dark:text-white">
-                    Action
+                <th scope="col" class="px-6 py-4 font-semibold text-gray-600 dark:text-white text-center">
+                    Actions
                 </th>
             </tr>
         </thead>
-
-        <!-- Table Body -->
+  
         <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700">
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Preface
+            <tr *ngFor="let res of reservations" class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
+                <td class="px-6 py-4 font-medium">
+                    <div class="flex items-center">
+                      <ng-container [ngSwitch]="res?.espace?.type">
+                        <!-- Bureau privé -->
+                        <i *ngSwitchCase="'Bureau privé'" class="ph ph-keyhole mr-2"></i>
+                        
+                        <!-- Espace ouvert -->
+                        <i *ngSwitchCase="'Espace ouvert'" class="ph ph-desk mr-2"></i>
+                        
+                        <!-- Salle de réunion -->
+                        <i *ngSwitchCase="'Salle de réunion'" class="ph ph-presentation mr-2"></i>
+                        
+                        <!-- Espace détente -->
+                        <i *ngSwitchCase="'Espace détente'" class="ph ph-couch mr-2"></i>
+                      </ng-container>
+                      {{ res?.espace?.type }}
+                    </div>
+                  </td>
+                <td class="px-6 py-4">
+                    {{ res?.user?.firstname }}
                 </td>
                 <td class="px-6 py-4">
-                    Espace vert
+                    {{ res?.user?.lastname }}
                 </td>
-                <td class="px-6 py-4">
-                    Hadil
+                <td class="px-6 py-4 text-center">
+                    <span class="font-medium">{{ res?.nbrePlaces }}</span>
                 </td>
-                <td class="px-6 py-4">
-                    Boukadida
-                </td>
-                <td class="px-6 py-4">
-                    4
-                </td>
-                <td class="px-6 py-4 space-x-4">
-                    <!-- Accept icon with action -->
-                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12l5 5L19 7" />
-                        </svg>
-                        Accepter
-                    </a>
-
-                    <!-- Reject icon with action -->
-                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        Refuser
-                    </a>
+                <td class="px-6 py-4 flex justify-center space-x-2">
+                    <!-- Affichage conditionnel du statut -->
+                    <div *ngIf="res.status === 'ACCEPTED'" class="px-3 py-1.5 bg-green-100 text-green-800 rounded-lg text-sm dark:bg-green-900/30 dark:text-green-300">
+                      <i class="ph ph-check-circle mr-1"></i>Acceptée
+                    </div>
+                    <div *ngIf="res.status === 'REJECTED'" class="px-3 py-1.5 bg-red-100 text-red-800 rounded-lg text-sm dark:bg-red-900/30 dark:text-red-300">
+                      <i class="ph ph-x-circle mr-1"></i>Refusée
+                    </div>
+  
+                    <!-- Boutons seulement si status est PENDING -->
+                    <div *ngIf="res.status === 'PENDING'" class="flex space-x-2">
+                        <button (click)="updateStatus(res.id, 'ACCEPTED')" 
+                                class="flex items-center px-3 py-1.5 text-sm font-medium text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all">
+                                <i class="ph ph-check"  style="font-size: 24px;"></i>
+                            
+                        </button>
+                        <button (click)="updateStatus(res.id, 'REJECTED')" 
+                                class="flex items-center px-3 py-1.5 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition-all">
+                                <i class="ph ph-trash"  style="font-size: 24px;"></i>
+                                
+                        </button>
+                    </div>
                 </td>
             </tr>
-            <!-- Additional Rows can be added here -->
         </tbody>
     </table>
 </div>
