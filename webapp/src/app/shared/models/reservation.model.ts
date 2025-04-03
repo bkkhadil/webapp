@@ -8,4 +8,5 @@ export interface Reservation {
   status: string;
   espace: Espace; // <-- Assurez-vous que cette propriété existe
   user: User;
+  total:number;
 }

@@ -49,6 +49,7 @@ export class UpdateCoworkzoneComponent implements OnInit {
   ngOnInit(): void {
     this.loadEquipments();
     this.loadCoworkspaceData();
+    
   }
 
 
@@ -78,6 +79,8 @@ export class UpdateCoworkzoneComponent implements OnInit {
         
         this.espaces = data.espaces || [];
       });
+      
+    
   }
   private formatDateForInput(dateString: string): string {
     // Handle potential parsing issues

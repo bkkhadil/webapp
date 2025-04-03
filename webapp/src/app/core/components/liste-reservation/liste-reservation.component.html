@@ -6,13 +6,34 @@
         Ici, vous avez la possibilité d'accepter ou de refuser la réservation effectuée pour votre espace de coworking .
     </p>
   </div>
+  <div class="max-w-[90%] mx-auto">
+    <div class="flex justify-end mb-4 mx-8 sm:mx-12 lg:mx-24">
+        <select [(ngModel)]="selectedSort" (change)="sortReservations()" 
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+          <option value="dateAsc">Tri par date (ancien → récent)</option>
+          <option value="dateDesc">Tri par date (récent → ancien)</option>
+        </select>
+      </div>
 <div class="relative overflow-x-auto shadow-lg rounded-xl bg-white dark:bg-gray-800 mt-8 mx-4 sm:mx-8 lg:mx-16">
     <table class="w-full text-sm text-left rtl:text-right text-gray-600 dark:text-gray-300">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
             <tr class="border-b border-gray-200 dark:border-gray-600">
                 <th scope="col" class="px-6 py-4 font-bold text-gray-600 dark:text-white">
+                    Coworking Space
+                </th>
+                <th scope="col" class="px-6 py-4 font-bold text-gray-600 dark:text-white">
                     Type
                 </th>
+                <th scope="col" class="px-6 py-4 font-bold text-gray-600 dark:text-white">
+                    Début
+                </th>
+                <th scope="col" class="px-6 py-4 font-bold text-gray-600 dark:text-white">
+                    Fin
+                </th>
+                <th scope="col" class="px-6 py-4 font-semibold text-gray-600 dark:text-white">
+                    Durée
+                </th>
+             
                 <th scope="col" class="px-6 py-4 font-semibold text-gray-600 dark:text-white">
                     Nom
                 </th>
@@ -20,16 +41,30 @@
                     Prénom
                 </th>
                 <th scope="col" class="px-6 py-4 font-semibold text-gray-600 dark:text-white">
-                    Places
+                    Place
+                </th>
+                
+                <th scope="col" class="px-6 py-4 font-semibold text-gray-600 dark:text-white">
+                    Nombre de ce type espace
+                </th>
+                <th scope="col" class="px-6 py-4 font-semibold text-gray-600 dark:text-white">
+                    Total 
                 </th>
                 <th scope="col" class="px-6 py-4 font-semibold text-gray-600 dark:text-white text-center">
                     Actions
                 </th>
+             
             </tr>
         </thead>
   
         <tbody>
-            <tr *ngFor="let res of reservations" class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
+            <!-- Modifiez la ligne du tableau avec une condition de classe -->
+<tr *ngFor="let res of reservations" 
+[class.bg-red-100]="res.hasOverlap"
+class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
+                <td class="px-6 py-4 font-medium">
+                    {{ res?.espace?.coWorkspace?.nom  }}
+                </td>
                 <td class="px-6 py-4 font-medium">
                     <div class="flex items-center">
                       <ng-container [ngSwitch]="res?.espace?.type">
@@ -37,7 +72,7 @@
                         <i *ngSwitchCase="'Bureau privé'" class="ph ph-keyhole mr-2"></i>
                         
                         <!-- Espace ouvert -->
-                        <i *ngSwitchCase="'Espace ouvert'" class="ph ph-desk mr-2"></i>
+              <i *ngSwitchCase="'Espace ouvert'" class="ph ph-desk mr-2"></i>
                         
                         <!-- Salle de réunion -->
                         <i *ngSwitchCase="'Salle de réunion'" class="ph ph-presentation mr-2"></i>
@@ -48,15 +83,31 @@
                       {{ res?.espace?.type }}
                     </div>
                   </td>
+                  <td class="px-6 py-4">
+                    {{ res.dateStart | date: 'dd/MM/yyyy' }}
+                </td>
+                <td class="px-6 py-4">
+                    {{ res.dateEnd | date: 'dd/MM/yyyy' }}
+                </td>
+                <td class="px-6 py-4">
+                    {{ calculateDuration(res.dateStart, res.dateEnd) }} jours
+                </td>
                 <td class="px-6 py-4">
                     {{ res?.user?.firstname }}
                 </td>
                 <td class="px-6 py-4">
                     {{ res?.user?.lastname }}
                 </td>
-                <td class="px-6 py-4 text-center">
-                    <span class="font-medium">{{ res?.nbrePlaces }}</span>
+                <td class="px-6 py-4">
+                    {{ res?.nbrePlaces }}
                 </td>
+                <td class="px-6 py-4 text-center">
+                    {{ res?.espace?.nbretype }}
+                 </td>
+                 <td class="px-6 py-4 text-center">
+                    {{ res?.total }}TND
+                 </td>
+                
                 <td class="px-6 py-4 flex justify-center space-x-2">
                     <!-- Affichage conditionnel du statut -->
                     <div *ngIf="res.status === 'ACCEPTED'" class="px-3 py-1.5 bg-green-100 text-green-800 rounded-lg text-sm dark:bg-green-900/30 dark:text-green-300">
@@ -83,4 +134,5 @@
             </tr>
         </tbody>
     </table>
+</div>
 </div>

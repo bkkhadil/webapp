@@ -55,11 +55,16 @@
           <input id="nbrePlaces" type="number" formControlName="nbrePlaces"
             class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
             placeholder="Entrez le nombre de places" />
-          <div *ngIf="reservationForm.get('nbrePlaces')?.invalid && (reservationForm.get('nbrePlaces')?.dirty || reservationForm.get('nbrePlaces')?.touched)"
-            class="text-red-500 text-sm mt-1">
-            <span *ngIf="reservationForm.get('nbrePlaces')?.errors?.['required']">Le nombre de places est obligatoire</span>
-            <span *ngIf="reservationForm.get('nbrePlaces')?.errors?.['min']">Minimum 1 place requise</span>
-          </div>
+          <!-- formulaire.component.html -->
+<div *ngIf="reservationForm.get('nbrePlaces')?.invalid && (reservationForm.get('nbrePlaces')?.dirty || reservationForm.get('nbrePlaces')?.touched)"
+class="text-red-500 text-sm mt-1">
+<span *ngIf="reservationForm.get('nbrePlaces')?.errors?.['required']">Le nombre de places est obligatoire</span>
+<span *ngIf="reservationForm.get('nbrePlaces')?.errors?.['min']">Minimum 1 place requise</span>
+<!-- Nouveau message d'erreur -->
+<span *ngIf="reservationForm.get('nbrePlaces')?.errors?.['max']">
+Capacité maximale dépassée ({{ espace?.capacite }} places disponibles)
+</span>
+</div>
         </div>
 
         <!-- Total estimé -->

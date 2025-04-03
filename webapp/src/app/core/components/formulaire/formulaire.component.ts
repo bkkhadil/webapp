@@ -120,15 +120,26 @@ export class FormulaireComponent implements OnInit {
     this.espaceId = Number(idParam);
   }
 
-  private loadEspaceDetails(): void {
-    this.coworkspaceService.getEspaceById(this.espaceId.toString()).subscribe({
-      next: (espace) => {
-        this.espace = espace;
-        this.calculateTotal();
-      },
-      error: (err) => console.error('Erreur:', err)
-    });
-  }
+// formulaire.component.ts
+
+private loadEspaceDetails(): void {
+  this.coworkspaceService.getEspaceById(this.espaceId.toString()).subscribe({
+    next: (espace) => {
+      this.espace = espace;
+      
+      // Ajout du validateur max après récupération de la capacité
+      this.reservationForm.get('nbrePlaces')?.setValidators([
+        Validators.required,
+        Validators.min(1),
+        Validators.max(this.espace.capacite) // Nouveau validateur
+      ]);
+      this.reservationForm.get('nbrePlaces')?.updateValueAndValidity();
+      
+      this.calculateTotal();
+    },
+    error: (err) => console.error('Erreur:', err)
+  });
+}
 
   onSubmit(): void {
     console.log('Submitting...', this.reservationForm.value);
