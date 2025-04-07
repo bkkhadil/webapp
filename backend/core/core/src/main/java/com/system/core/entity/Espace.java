@@ -1,6 +1,8 @@
 package com.system.core.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -8,6 +10,8 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -43,8 +47,17 @@ public class Espace {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_co_workspace", nullable = false)
-    @JsonBackReference
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "espaces"}) // Autorise la sérialisation
     private CoWorkspace coWorkspace;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "espace", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations = new ArrayList<>();
+    public double getPrixParMois() {
+        return prixParMois;
+    }
 
+    public void setPrixParMois(double prixParMois) {
+        this.prixParMois = prixParMois;
+    }
 }

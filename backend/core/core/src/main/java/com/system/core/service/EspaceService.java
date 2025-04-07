@@ -57,11 +57,6 @@ public class EspaceService {
 
 
 
-    public Espace findById(Long id) {
-        return espaceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Espace non trouvé"));
-    }
-
 
 
 
@@ -90,5 +85,9 @@ public class EspaceService {
         }
 
         return espaceRepository.save(existing);
+    }
+    public Espace findById(Long id) {
+        return espaceRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Espace non trouvé ID: " + id));
     }
 }

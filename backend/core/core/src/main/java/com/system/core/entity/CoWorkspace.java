@@ -62,6 +62,9 @@ public class CoWorkspace {
     public void setImage(byte[] imageData) {
         this.imageData = imageData;
     }
+    @ManyToOne
+    @JoinColumn(name = "partner_id")
+    private User partner;
 
     // Ajouter cette méthode pour obtenir l'image
     public byte[] getImage() {
