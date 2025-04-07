@@ -14,6 +14,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { ContactComponent } from './shared/components/contact/contact.component';
 import { DetailsComponent } from './core/components/details/details.component';
 
+
+
+
+
+
+
 import { GoogleMapsModule } from '@angular/google-maps';
 import { FormulaireComponent } from './core/components/formulaire/formulaire.component';
 import { CrudresponsableComponent } from './core/components/crudresponsable/crudresponsable.component';
@@ -81,9 +87,10 @@ import { ServicesComponent } from './core/components/services/services.component
     GoogleMapsModule,
     ReactiveFormsModule,
     CommonModule,
+  
   ],
   providers: [
-    DatePipe,  { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true } 
+    DatePipe,  { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

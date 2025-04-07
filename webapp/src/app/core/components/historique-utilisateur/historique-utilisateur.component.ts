@@ -16,7 +16,7 @@ export class HistoriqueUtilisateurComponent {
 
   ngOnInit() {
     this.loadReservations();
-  }
+    }
 
   loadReservations() {
     this.reservationService.getUserReservations().subscribe({

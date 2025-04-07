@@ -22,7 +22,7 @@ export class FormulaireComponent implements OnInit {
   espace!: Espace;
   today: Date = new Date();
   isSubmitting: boolean = false;
-
+  errorMessage: string | null = null;
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -141,53 +141,80 @@ private loadEspaceDetails(): void {
   });
 }
 
-  onSubmit(): void {
-    console.log('Submitting...', this.reservationForm.value);
-    
-    if (this.reservationForm.valid && !this.isSubmitting) {
-      console.log('Form is valid');
-      
-      this.isSubmitting = true;
-  
-      const formattedStart = this.datePipe.transform(this.reservationForm.value.dateStart, 'yyyy-MM-dd');
-      const formattedEnd = this.datePipe.transform(this.reservationForm.value.dateEnd, 'yyyy-MM-dd');
-  
-      console.log('Formatted dates:', { formattedStart, formattedEnd });
-  
-      const reservationData = {
-        dateStart: formattedStart,
-        dateEnd: formattedEnd,
-        nbrePlaces: this.reservationForm.value.nbrePlaces,
-        espaceId: this.espaceId,
+onSubmit(): void {
+  this.errorMessage = null;
+
+  if (this.reservationForm.valid && !this.isSubmitting) {
+    this.isSubmitting = true;
+
+    const formattedStart = this.datePipe.transform(this.reservationForm.value.dateStart, 'yyyy-MM-dd');
+    const formattedEnd = this.datePipe.transform(this.reservationForm.value.dateEnd, 'yyyy-MM-dd');
+
+    const reservationData = {
+      dateStart: formattedStart,
+      dateEnd: formattedEnd,
+      nbrePlaces: this.reservationForm.value.nbrePlaces,
+      espaceId: this.espaceId,
+    };
+
+    this.reservationService.createReservation(reservationData).subscribe({
+      next: (response) => {
+        this.router.navigate(['/user/historique']);
+      },
+      error: (err) => {
+        console.error('Full error:', err);
+        this.isSubmitting = false;
         
-      };
-  
-      console.log('Sending data:', reservationData);
-  
-      this.reservationService.createReservation(reservationData).subscribe({
-        next: (response) => {
-          console.log('Success:', response);
-          this.router.navigate(['/user/historique']);
-        },
-        error: (err) => {
-          console.error('Full error:', err);
-          this.isSubmitting = false;
-          const errorMessage = err.error?.message 
-            || err.error?.error?.message 
-            || err.message 
-            || 'Erreur serveur';
-          alert(`Erreur: ${errorMessage}`);
-        },
-        complete: () => {
-          console.log('Request completed');
-          this.isSubmitting = false;
+        // Utilisez err.message qui contient maintenant le message du backend
+        if (err.message.includes('déjà réservés')) {
+          this.errorMessage = err.message;
+        } 
+        else if (err.status === 400) {
+          this.handleBadRequestError(err);
         }
-      });
-    } else {
-      console.warn('Form invalid', this.reservationForm.errors);
-      this.reservationForm.markAllAsTouched();
-    }
+        else {
+          this.errorMessage = this.extractErrorMessage(err);
+        }
+      },
+      complete: () => {
+        this.isSubmitting = false;
+      }
+    });
+  } else {
+    this.reservationForm.markAllAsTouched();
   }
+}
+private handleBadRequestError(err: any): void {
+  if (err.error?.message?.includes('Capacité dépassée')) {
+    this.errorMessage = 'Le nombre de places demandé dépasse la capacité disponible';
+  } else {
+    this.errorMessage = 'Données de réservation invalides';
+  }
+}
+
+private extractErrorMessage(err: any): string {
+  // Si le backend retourne un message direct
+  if (typeof err.error === 'string') return err.error;
+  
+  // Si c'est un objet d'erreur structuré
+  if (err.error?.message) return err.error.message;
+  
+  // Erreur réseau
+  if (err.error instanceof ErrorEvent) {
+    return 'Problème de connexion internet';
+  }
+  
+  // Erreur serveur
+  if (err.status >= 500) {
+    return 'Erreur interne du serveur';
+  }
+  
+  // Cas par défaut
+  return 'la date est réservée';
+}
+
+// Nouvelle méthode pour extraire le message d'erreur
+
     }
   
   

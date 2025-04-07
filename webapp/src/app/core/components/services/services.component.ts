@@ -24,5 +24,15 @@ export class ServicesComponent {
       this.router.navigate(['/login/partner']); // Redirige si non authentifié
     }
   }
-
+  navigateToUser(): void {
+    if (this.authService.isAuthenticated()) {
+      if (this.authService.currentUser?.role === 'USER') {
+        this.router.navigate(['/user/home']);
+      } else {
+        this.router.navigate(['/login/user']); // Redirige si mauvais rôle
+      }
+    } else {
+      this.router.navigate(['/login/user']); // Redirige si non authentifié
+    }
+  }
 }

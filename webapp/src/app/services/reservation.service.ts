@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Reservation } from '../shared/models/reservation.model';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 // reservation.service.ts
 @Injectable({
@@ -17,11 +17,16 @@ export class ReservationService {
 
 createReservation(reservationData: any): Observable<any> {
   const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.authService.getAccessToken()}`
+    'Authorization': `Bearer ${this.authService.getAccessToken()}`
   });
 
-  return this.http.post(`${this.apiUrl}/create`, reservationData, { headers });
+  return this.http.post(`${this.apiUrl}/create`, reservationData, { headers }).pipe(
+    catchError(error => {
+      // Extraction du message depuis la réponse JSON du backend
+      const errorMsg = error.error?.message || 'Erreur inconnue lors de la réservation';
+      return throwError(() => new Error(errorMsg));
+    })
+  );
 }
 
   getPartnerReservations(): Observable<any[]> {

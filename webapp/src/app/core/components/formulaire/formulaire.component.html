@@ -1,4 +1,15 @@
 <section class="bg-white dark:bg-gray-900 py-8 px-4 mx-auto max-w-screen-xl">
+  <!-- Bloc d'erreur global -->
+  <div *ngIf="errorMessage" class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+    <div class="flex items-center text-red-600">
+      <i class="ph ph-warning-circle text-xl mr-2"></i>
+      <span class="font-medium">{{ errorMessage }}</span>
+    </div>
+    <div *ngIf="errorMessage?.includes('occupé')" class="mt-2 text-sm text-red-500">
+      Conseil : Veuillez choisir d'autres dates ou vérifier la disponibilité
+    </div>
+  </div>
+
   <div class="lg:grid lg:grid-cols-2 lg:gap-16 lg:py-16 lg:px-6">
     <!-- Colonne gauche : Formulaire -->
     <div class="bg-white bg-opacity-80 p-6 rounded-lg shadow-lg">

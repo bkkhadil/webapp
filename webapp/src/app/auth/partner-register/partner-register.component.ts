@@ -11,23 +11,46 @@ import { Role } from '../../../models/role.model';
   styleUrl: './partner-register.component.css'
 })
 export class PartnerRegisterComponent {
+  errorMessage: string = ''; 
   registerRequest: RegisterRequest = {
     firstname: '',
     lastname: '',
     email: '',
     password: '',
-    role: Role.PARTNER // Utilisez l'enum directement
+    role: Role.PARTNER, // <-- S'assurer que le rôle est bien PARTNER
+    companyName: '',
+    taxIdentificationNumber: ''
   };
 
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
-
-  onSubmit() {
-    this.authService.register(this.registerRequest).subscribe({
-      next: () => this.router.navigate(['/login/partner']),
-      error: (err) => console.error('Registration failed:', err)
-    });
+  onTaxIdInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.registerRequest.taxIdentificationNumber = input.value.toUpperCase();
+}
+formatTaxId() {
+  if (this.registerRequest.taxIdentificationNumber) {
+    this.registerRequest.taxIdentificationNumber = this.registerRequest.taxIdentificationNumber
+      .toUpperCase()
+      .replace(/[^A-Z0-9]/g, '') // Supprimer les caractères non alphanumériques
+      .slice(0, 13); // Limiter à 13 caractères
   }
+}
+onSubmit() {
+  // Forcer le rôle PARTNER
+  this.registerRequest.role = Role.PARTNER;
+  
+  this.authService.register(this.registerRequest).subscribe({
+    next: () => this.router.navigate(['/login/partner']),
+    error: (err) => {
+      if (err.error?.fieldErrors) {
+        this.errorMessage = err.error.fieldErrors
+          .map((e: any) => `${e.field}: ${e.message}`)
+          .join('\n');
+      }
+    }
+  });
+}
 }

@@ -26,9 +26,15 @@ export class UserRegisterComponent {
   ) {}
 
   onSubmit() {
-    this.authService.register(this.registerRequest).subscribe({
-      next: () => this.router.navigate(['/login/user']),
-      error: (err) => console.error('Registration failed:', err)
+    const request: RegisterRequest = { 
+        ...this.registerRequest,
+        companyName: undefined,
+        taxIdentificationNumber: undefined
+    };
+
+    this.authService.register(request).subscribe({
+        next: () => this.router.navigate(['/login/user']),
+        error: (err) => console.error('Erreur:', err)
     });
-  }
+}
 }
