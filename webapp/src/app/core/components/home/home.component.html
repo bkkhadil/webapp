@@ -14,13 +14,31 @@
               <div class="flex items-center shadow-lg border rounded-xl overflow-hidden transition-all hover:shadow-xl">
                   <label for="city-dropdown" class="sr-only">Sélectionner une ville</label>
                   <select
-                      id="city-dropdown"
-                      [(ngModel)]="selectedCity"
-                      name="city"
-                      class="shrink-0 py-3 px-4 text-sm text-gray-700 bg-gray-50 border-r border-gray-200 rounded-l-xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-200">
-                      <option value="">Toutes les villes</option>
-                      <!-- Options villes -->
-                  </select>
+                  id="city-dropdown"
+                  [(ngModel)]="selectedCity"
+                  name="city"
+                  class="shrink-0 py-3 px-4 text-sm text-gray-700 bg-gray-50 border-r border-gray-200 rounded-l-xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-200">
+                  <option value="">Toutes les villes</option>
+                  <option value="paris">Paris</option>
+                  <option value="marseille">Marseille</option>
+                  <option value="lyon">Lyon</option>
+                  <option value="toulouse">Toulouse</option>
+                  <option value="nice">Nice</option>
+                  <option value="nantes">Nantes</option>
+                  <option value="strasbourg">Strasbourg</option>
+                  <option value="montpellier">Montpellier</option>
+                  <option value="bordeaux">Bordeaux</option>
+                  <option value="lille">Lille</option>
+                  <option value="rennes">Rennes</option>
+                  <option value="reims">Reims</option>
+                  <option value="saint-etienne">Saint-Étienne</option>
+                  <option value="toulon">Toulon</option>
+                  <option value="grenoble">Grenoble</option>
+                  <option value="dijon">Dijon</option>
+                  <option value="angers">Angers</option>
+                  <option value="nimes">Nîmes</option>
+                  <option value="villeurbanne">Villeurbanne</option>
+              </select>
               
                   <input
                       type="text"

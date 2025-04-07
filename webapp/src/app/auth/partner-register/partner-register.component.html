@@ -73,17 +73,21 @@
               placeholder="Entreprise XYZ"
               required>
           </div>
-          
           <div>
-            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Matricule fiscal</label>
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              Matricule fiscal
+            </label>
             <input 
-            type="text"
-            name="taxIdentificationNumber"
-            [(ngModel)]="registerRequest.taxIdentificationNumber"
-            (input)="formatTaxId()"
-            placeholder="FR12345678901"
-            required>     
-        </div>
+              type="text"
+              name="taxIdentificationNumber"
+              [value]="formattedTaxId"
+              (input)="onTaxIdInput($event)"
+              placeholder="1234567/Y/Z/T/000"
+              class="w-full p-2 border rounded-lg"
+              required
+            >
+            <small class="text-gray-500">Format attendu : 1234567/Y/Z/T/000</small>
+          </div>
          
 
 

@@ -26,18 +26,36 @@ export class PartnerRegisterComponent {
     private authService: AuthService,
     private router: Router
   ) {}
-  onTaxIdInput(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.registerRequest.taxIdentificationNumber = input.value.toUpperCase();
+// Variable temporaire pour le formatage
+formattedTaxId: string = '';
+
+
+onTaxIdInput(event: Event) {
+  const input = event.target as HTMLInputElement;
+  let value = input.value.toUpperCase().replace(/[^A-Z0-9/]/g, '');
+  
+  // Nettoyage de la valeur brute (sans séparateurs)
+  const rawValue = value.replace(/\//g, '').slice(0, 13);
+  
+  // Découpage des parties selon le format réglementaire
+  const parts = [
+    rawValue.slice(0, 7),  // 7 chiffres (numéro d'identification)
+    rawValue.slice(7, 8),  // 1 lettre (clé de contrôle)
+    rawValue.slice(8, 9),  // 1 lettre (situation TVA: A/B/P/F/N)
+    rawValue.slice(9, 10), // 1 lettre (catégorie: M/C/P/N)
+    rawValue.slice(10, 13) // 3 chiffres (numéro de série)
+  ];
+
+  // Formatage avec séparateurs
+  this.formattedTaxId = parts.filter(p => p).join('/');
+  
+  // Mise à jour de la valeur brute pour le backend
+  this.registerRequest.taxIdentificationNumber = rawValue;
+  
+  // Mise à jour de l'affichage
+  input.value = this.formattedTaxId;
 }
-formatTaxId() {
-  if (this.registerRequest.taxIdentificationNumber) {
-    this.registerRequest.taxIdentificationNumber = this.registerRequest.taxIdentificationNumber
-      .toUpperCase()
-      .replace(/[^A-Z0-9]/g, '') // Supprimer les caractères non alphanumériques
-      .slice(0, 13); // Limiter à 13 caractères
-  }
-}
+ 
 onSubmit() {
   // Forcer le rôle PARTNER
   this.registerRequest.role = Role.PARTNER;
