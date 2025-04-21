@@ -42,7 +42,7 @@ services:
     container_name: angularpart
     build:
       context: ./frontend
-      dockerfile: docker/frontend/Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "4200:80"
     depends_on:
