@@ -1,0 +1,41 @@
+image: docker:20.10
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+
+stages:
+  - build
+  - deploy
+
+build-backend:
+  stage: build
+  rules:
+    - changes:
+      - backend/**/*
+  script:
+    - cd backend/core
+    - docker build -t $CI_REGISTRY/backend:$CI_COMMIT_SHORT_SHA -f docker/backend/Dockerfile .
+    - docker push $CI_REGISTRY/backend:$CI_COMMIT_SHORT_SHA
+
+build-frontend:
+  stage: build
+  rules:
+    - changes:
+      - frontend/**/*
+  script:
+    - cd frontend
+    - docker build -t $CI_REGISTRY/frontend:$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_REGISTRY/frontend:$CI_COMMIT_SHORT_SHA
+
+deploy-prod:
+  stage: deploy
+  environment: 
+    name: production
+    url: http://prod-server
+  script:
+    - apk add openssh-client
+    - ssh -o StrictHostKeyChecking=no user@prod-server "docker-compose -f /opt/middleoffice/docker-compose.yml pull && docker-compose -f /opt/middleoffice/docker-compose.yml up -d"

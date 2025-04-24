@@ -1,0 +1,18 @@
+.scrollable-dropdown {
+    height: 40px; /* hauteur normale du select */
+  }
+  
+  /* Liste déroulante stylée pour scroller après ouverture */
+  .scrollable-dropdown option {
+    /* rien ici, c’est pour l’accessibilité */
+  }
+  
+  /* Hack pour certains navigateurs : limite la hauteur du menu déroulant */
+  .scrollable-dropdown:focus {
+    overflow-y: auto;
+  }
+  
+  .scrollable-dropdown option {
+    /* Peut être laissé vide ou stylé */
+  }
+  
