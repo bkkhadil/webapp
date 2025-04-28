@@ -4,6 +4,7 @@ pipeline {
     environment {
         REGISTRY = "registry.gitlab.com/pfe7040305/middleoffice"
         VERSION = "${env.BUILD_ID}"
+        DEPLOY_IP = "192.168.1.100"
     }
 
     stages {
@@ -60,18 +61,21 @@ pipeline {
             }
         }
 
-        stage('Deploy Staging') {
-            steps {
-                sshagent(['staging-key']) {
-                    sh '''
-                        ssh -o StrictHostKeyChecking=no user@staging-server "
-                            docker-compose -f /opt/middleoffice/docker-compose.yml pull &&
-                            docker-compose -f /opt/middleoffice/docker-compose.yml up -d
-                        "
-                    '''
-                }
-            }
+     stage('Deploy Staging') {
+    steps {
+        sshagent(['staging-key']) {
+            sh '''
+                mkdir -p ~/.ssh  # Créer le dossier .ssh
+                chmod 700 ~/.ssh  # Permissions sécurisées
+                ssh-keyscan 192.168.1.100 >> ~/.ssh/known_hosts  # Ajouter l'empreinte du serveur
+                ssh -o StrictHostKeyChecking=no user@192.168.1.100 "
+                    docker-compose -f /opt/middleoffice/docker-compose.yml pull &&
+                    docker-compose -f /opt/middleoffice/docker-compose.yml up -d
+                "
+            '''
         }
+    }
+}
     }
 
     post {
