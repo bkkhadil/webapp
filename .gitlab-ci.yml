@@ -41,12 +41,13 @@ deploy-prod:
   stage: deploy
   environment: 
     name: production
-    url: http://prod-server
+    url: http://192.168.1.100  # Remplacez par l'IP/domaine réel
   script:
     - apk add openssh-client
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ssh_key
     - chmod 600 ssh_key
-    - ssh -i ssh_key -o StrictHostKeyChecking=no user@prod-server "
+    - ssh-keyscan 192.168.1.100 >> ~/.ssh/known_hosts
+    - ssh -i ssh_key -o StrictHostKeyChecking=no user@192.168.1.100 "
         docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
         docker-compose -f /opt/app/docker-compose.prod.yml pull &&
         docker-compose -f /opt/app/docker-compose.prod.yml up -d
