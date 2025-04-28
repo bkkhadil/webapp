@@ -41,16 +41,16 @@ deploy-prod:
   stage: deploy
   environment: 
     name: production
-    url: http://192.168.1.100  # Remplacez par votre IP/domaine
+    url: http://203.0.113.10  # IP publique
   script:
     - apk add openssh-client
-    - mkdir -p ~/.ssh  # Crée le dossier .ssh
-    - chmod 700 ~/.ssh  # Optionnel : permissions sécurisées
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ssh_key
     - chmod 600 ssh_key
-    - ssh-keyscan 192.168.1.100 >> ~/.ssh/known_hosts  # Maintenant possible
-    - ssh -i ssh_key -o StrictHostKeyChecking=no user@192.168.1.100 "
+    - ssh-keyscan 203.0.113.10 >> ~/.ssh/known_hosts  # IP publique
+    - ssh -i ssh_key -o StrictHostKeyChecking=no user@203.0.113.10 "
         docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
-        docker-compose -f /opt/app/docker-compose.prod.yml pull &&
-        docker-compose -f /opt/app/docker-compose.prod.yml up -d
+        docker-compose -f /opt/middleoffice/docker-compose.prod.yml pull &&
+        docker-compose -f /opt/middleoffice/docker-compose.prod.yml up -d
       "
