@@ -1,0 +1,82 @@
+<section class="bg-white dark:bg-gray-900">
+    <!-- Section Utilisateur -->
+    <div class="gap-8 items-center py-16 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-24 lg:px-6">
+        <div class="order-2 lg:order-1">
+            <div class="max-w-xl mb-8 lg:pr-10">
+                <h2 class="mb-6 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+                    Réservez votre espace<br>
+                    <span class="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">de coworking</span>
+                </h2>
+                <p class="mb-5 text-gray-600 dark:text-gray-400">
+                    Ingénieur, freelance ou étudiant ? Trouvez l'espace parfait adapté à vos besoins 
+                    en stabilité, flexibilité et commodités.
+                </p>
+                <p class="mb-8 text-gray-600 dark:text-gray-400">
+                    Découvrez des environnements de travail inspirants et toutes les infrastructures nécessaires 
+                    pour votre productivité.
+                </p>
+                <a (click)="navigateToUser()" class="inline-flex items-center px-6 py-3 text-white bg-gradient-to-r from-blue-600 to-cyan-500 rounded-lg hover:bg-gradient-to-r hover:from-blue-700 hover:to-cyan-600 transition duration-300">
+                    Explorer les espaces
+                    <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </a>
+            </div>
+        </div>
+        <div class="order-1 mb-12 lg:mb-0 lg:order-2 relative group">
+            <div class="grid gap-4 sm:gap-6">
+                <div class="relative overflow-hidden rounded-xl shadow-xl hover:shadow-2xl transition-shadow">
+                    <img class="w-full h-64 object-cover transform transition duration-500 hover:scale-105" 
+                         src="https://images.unsplash.com/photo-1522071820081-009f0129c71c" 
+                         alt="Espace collaboratif">
+                </div>
+                <div class="hidden sm:block ml-12 relative overflow-hidden rounded-xl shadow-xl hover:shadow-2xl transition-shadow">
+                    <img class="w-full h-64 object-cover transform transition duration-500 hover:scale-105" 
+                         src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7" 
+                         alt="Salle de réunion">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Partenaire -->
+    <div class="bg-blue-50 dark:bg-gray-800">
+        <div class="gap-8 items-center py-16 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-24 lg:px-6">
+            <div class="relative group">
+                <div class="grid gap-4 sm:gap-6">
+                    <div class="relative overflow-hidden rounded-xl shadow-xl hover:shadow-2xl transition-shadow">
+                        <img class="w-full h-64 object-cover transform transition duration-500 hover:scale-105" 
+                             src="\assets\images\espace-b.png" 
+                             alt="Espace partenaire">
+                    </div>
+                    <div class="hidden sm:block mr-12 relative overflow-hidden rounded-xl shadow-xl hover:shadow-2xl transition-shadow">
+                        <img class="w-full h-64 object-cover transform transition duration-500 hover:scale-105" 
+                             src="\assets\images\espace-h.png" 
+                             alt="Poste de travail">
+                    </div>
+                </div>
+            </div>
+            <div class="max-w-xl mt-12 lg:mt-0 lg:pl-10">
+                <h2 class="mb-6 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+                    Devenez partenaire<br>
+                    <span class="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">et développez votre activité</span>
+                </h2>
+                <p class="mb-5 text-gray-600 dark:text-gray-400">
+                    Proposez votre espace de coworking à notre communauté et gérez vos réservations 
+                    via une interface intuitive.
+                </p>
+                <p class="mb-8 text-gray-600 dark:text-gray-400">
+                    Bénéficiez d'outils professionnels pour optimiser votre taux d'occupation 
+                    et vos revenus.
+                </p>
+                <a 
+                (click)="navigateToPartnerCrud()"
+                class="inline-flex items-center px-6 py-3 text-white bg-gradient-to-r from-blue-600 to-cyan-500 rounded-lg hover:bg-gradient-to-r hover:from-blue-700 hover:to-cyan-600 transition duration-300 cursor-pointer"
+              >
+                Proposer mon espace
+                <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                </svg>
+              </a>
+            </div>
+        </div>
+    </div>
+</section>

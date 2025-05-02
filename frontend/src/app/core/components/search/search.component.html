@@ -1,0 +1,100 @@
+<main class="mb-20 md:mb-24 lg:mb-28">
+  <section class="mx-auto max-w-4xl px-6 mt-0">
+    <br>
+    <form class="max-w-2xl w-full" (ngSubmit)="search()">
+      <div class="flex items-center shadow-lg border rounded-lg overflow-hidden w-full">
+        <label for="city-dropdown" class="sr-only">Sélectionner une ville</label>
+        <select
+          id="city-dropdown"
+          [(ngModel)]="selectedCity"
+          name="city"
+          class="shrink-0 py-3.5 px-5 text-base text-brown-900 bg-beige-100 border-r border-oak-300 rounded-s-lg focus:outline-none focus:ring-brown-500 focus:border-brown-500 dark:bg-gray-800 dark:text-beige-200 dark:border-brown-600">
+          <option value="">Toutes les villes</option>
+          <option value="tunis">Tunis</option>
+          <option value="sfax">Sfax</option>
+          <option value="sousse">Sousse</option>
+          <option value="kairouan">Kairouan</option>
+          <option value="bizerte">Bizerte</option>
+          <option value="gabes">Gabès</option>
+          <option value="ariana">Ariana</option>
+          <option value="gafsa">Gafsa</option>
+          <option value="monastir">Monastir</option>
+          <option value="nabeul">Nabeul</option>
+          <option value="beja">Béja</option>
+          <option value="kasserine">Kasserine</option>
+          <option value="mahdia">Mahdia</option>
+          <option value="medenine">Médenine</option>
+          <option value="zaghouan">Zaghouan</option>
+          <option value="kebili">Kébili</option>
+          <option value="tatouine">Tataouine</option>
+          <option value="tozeur">Tozeur</option>
+          <option value="manouba">La Manouba</option>
+          <option value="ben_arous">Ben Arous</option>
+        </select>
+    
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          name="search"
+          class="flex-grow w-full p-3.5 text-base text-gray-900 bg-white border-none focus:ring-0 focus:outline-none dark:bg-gray-700 dark:text-white"
+          placeholder="Rechercher"
+        />
+    
+        <button type="submit" class="flex items-center py-3.5 px-6 bg-blue-600 text-white text-base font-medium rounded-e-lg hover:bg-blue-700">
+          <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+          </svg>
+          <span class="sr-only">Rechercher</span>
+        </button>
+      </div>
+    </form>
+    
+    <br>
+
+    <section>
+      <p *ngIf="results.length === 0" class="text-gray-500">
+        😕 Désolé, aucun résultat ne correspond à votre recherche. Essayez d'affiner vos critères !
+      </p>
+
+      <p *ngIf="results.length > 0" class="text-gray-500">
+        Votre espace idéal est peut-être parmi nos {{ results.length }} résultats ! <br><br>Votre espace idéal vous attend parmi nos trois meilleures sélections ! Explorez-les sans plus tarder et réservez en toute simplicité l'endroit parfait pour vos besoins. Nous espérons que vous vivrez une expérience unique et mémorable, alliant confort, praticité et satisfaction.
+      </p>
+
+      <div *ngIf="results.length > 0; else noResults" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6">
+        
+          <div *ngFor="let coworspace of results; trackBy: trackByNom" class="space-y-6 overflow-hidden rounded-lg border border-gray-200 bg-white p-8 shadow-md dark:border-gray-700 dark:bg-gray-800">
+            <a class="overflow-hidden rounded">
+              <img class="mx-auto h-70 w-70" [src]="'data:image/png;base64,' + coworspace.image" [alt]="coworspace.nom" />
+            </a>
+        
+            <div>
+            <a class="text-xl font-semibold leading-tight text-gray-900 hover:underline dark:text-white">
+              {{ coworspace.nom }}
+            </a>
+            <p class="mt-2 text-base font-normal text-gray-500 dark:text-gray-400">
+              <i class="ph ph-buildings"></i>  {{ coworspace.ville }}
+            </p>
+          </div>
+
+          <div>
+            <p class="text-lg font-bold text-gray-900 dark:text-white">
+              <i class="ph ph-map-pin"></i> {{ coworspace.adresse }}
+            </p>
+          </div>
+
+       <div class="mt-6 flex items-center gap-2.5">
+        <button (click)="goToDetails(coworspace.id)" type="button" class="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-green-600 p-2.5 text-sm font-medium text-white hover:bg-green-700">
+          <i class="ph ph-info"></i> Détails
+        </button>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noResults>
+        <p class="text-center text-gray-500">
+          <i class="ph ph-warning"></i> Aucun espace trouvé.
+        </p>
+      </ng-template>
+    </section>
+  </section>
+</main>

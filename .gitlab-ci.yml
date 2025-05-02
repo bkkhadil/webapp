@@ -1,0 +1,56 @@
+image: docker:20.10
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+  CI_REGISTRY: registry.gitlab.com  # Adapté à votre registre
+  CI_REGISTRY_IMAGE: $CI_REGISTRY/pfe7040305/middleoffice
+
+
+stages:
+  - build
+  - test
+  - deploy
+
+build-backend:
+  stage: build
+  rules:
+    - changes:
+      - backend/**/*
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - cd backend/core
+    - docker build -t $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_SHORT_SHA -f docker/backend/Dockerfile .
+    - docker push $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_SHORT_SHA
+
+build-frontend:
+  stage: build
+  rules:
+    - changes:
+      - frontend/**/*
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - cd frontend
+    - docker build -t $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHORT_SHA
+
+deploy-prod:
+  stage: deploy
+  environment: 
+    name: production
+    url: http://203.0.113.10  # IP publique
+  script:
+    - apk add openssh-client
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ssh_key
+    - chmod 600 ssh_key
+    - ssh-keyscan 203.0.113.10 >> ~/.ssh/known_hosts  # IP publique
+    - ssh -i ssh_key -o StrictHostKeyChecking=no user@203.0.113.10 "
+        docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
+        docker-compose -f /opt/middleoffice/docker-compose.prod.yml pull &&
+        docker-compose -f /opt/middleoffice/docker-compose.prod.yml up -d
+      "

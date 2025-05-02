@@ -1,0 +1,125 @@
+<div class="mx-auto max-w-screen-2xl px-4 lg:px-12 flex justify-center">
+  <p class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-4 text-center max-w-2xl">
+    Remplissez le formulaire de manière simple et rapide pour ajouter votre espace de coworking en quelques clics.
+  </p>
+</div>
+
+<form [formGroup]="coworkspaceForm" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto px-4 mt-12">
+  <!-- Détails du CoWorkspace -->
+  <div class="grid gap-4 mb-4 sm:grid-cols-2">
+    <!-- Nom du coworking space -->
+    <div>
+      <label for="coworkspace-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        <i class="ph ph-building" aria-hidden="true"></i> Nom du coworking space
+      </label>
+      <input type="text" id="coworkspace-name" formControlName="nom"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Nom du coworking space">
+      <!-- Message d'erreur -->
+      <div *ngIf="coworkspaceForm.get('nom')?.invalid && (coworkspaceForm.get('nom')?.dirty || coworkspaceForm.get('nom')?.touched)"
+        class="text-red-500 text-sm mt-1">
+        <span *ngIf="coworkspaceForm.get('nom')?.errors?.['required']">Le nom est obligatoire.</span>
+      </div>
+    </div>
+
+    <!-- Adresse -->
+    <div>
+      <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        <i class="ph ph-map-pin" aria-hidden="true"></i> Adresse
+      </label>
+      <input type="text" id="address" formControlName="adresse"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Adresse du coworking space">
+      <!-- Message d'erreur -->
+      <div *ngIf="coworkspaceForm.get('adresse')?.invalid && (coworkspaceForm.get('adresse')?.dirty || coworkspaceForm.get('adresse')?.touched)"
+        class="text-red-500 text-sm mt-1">
+        <span *ngIf="coworkspaceForm.get('adresse')?.errors?.['required']">L'adresse est obligatoire.</span>
+      </div>
+    </div>
+
+    <!-- Ville -->
+    <div>
+      <label for="city" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        <i class="ph ph-city" aria-hidden="true"></i> Ville
+      </label>
+      <input type="text" id="city" formControlName="ville"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Ville du coworking space">
+      <!-- Message d'erreur -->
+      <div *ngIf="coworkspaceForm.get('ville')?.invalid && (coworkspaceForm.get('ville')?.dirty || coworkspaceForm.get('ville')?.touched)"
+        class="text-red-500 text-sm mt-1">
+        <span *ngIf="coworkspaceForm.get('ville')?.errors?.['required']">La ville est obligatoire.</span>
+      </div>
+    </div>
+
+    <!-- Date de création -->
+    <div>
+      <label for="creation-date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        <i class="ph ph-calendar" aria-hidden="true"></i> Date de création
+      </label>
+      <input type="date" id="creation-date" formControlName="date_creation"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+      <!-- Message d'erreur -->
+      <div *ngIf="coworkspaceForm.get('date_creation')?.invalid && (coworkspaceForm.get('date_creation')?.dirty || coworkspaceForm.get('date_creation')?.touched)"
+        class="text-red-500 text-sm mt-1">
+        <span *ngIf="coworkspaceForm.get('date_creation')?.errors?.['required']">La date de création est obligatoire.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Équipements disponibles -->
+<!-- Équipements disponibles -->
+<div class="mt-4">
+  <label class="block text-sm font-medium text-gray-700 dark:text-white">Équipements disponibles :</label>
+  <div class="grid grid-cols-2 gap-4 mt-2">
+    <label *ngFor="let eq of equipmentOptions" class="flex items-center gap-2">
+      <input type="checkbox" [(ngModel)]="eq.selected" [ngModelOptions]="{ standalone: true }" class="accent-primary-500">
+      <span>{{ eq.name }}</span>
+    </label>
+  </div>
+</div>
+
+  <!-- Description -->
+  <div class="mt-6">
+    <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description du coworking space</label>
+    <textarea id="description" formControlName="description"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+      placeholder="Description du coworking space"></textarea>
+    <!-- Message d'erreur -->
+    <div *ngIf="coworkspaceForm.get('description')?.invalid && (coworkspaceForm.get('description')?.dirty || coworkspaceForm.get('description')?.touched)"
+      class="text-red-500 text-sm mt-1">
+      <span *ngIf="coworkspaceForm.get('description')?.errors?.['required']">La description est obligatoire.</span>
+    </div>
+  </div>
+<!-- Ajouter cette section pour l'image -->
+<div class="mt-6">
+  <label class="block text-sm font-medium text-gray-700 dark:text-white">
+    <i class="ph ph-images text-gray-500 mr-2"></i> Image du coworking space (obligatoire)
+  </label>
+  
+  <label for="dropzone-file" class="mt-2 flex justify-center items-center h-40 border-2 border-dashed rounded-lg cursor-pointer dark:bg-gray-700">
+    <div class="text-center">
+      <svg class="w-10 h-10 text-gray-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+      </svg>
+      <p class="text-sm text-gray-500">Cliquez pour télécharger ou glissez-déposez</p>
+      <p class="text-xs text-gray-400">Formats acceptés : SVG, PNG, JPG, GIF (MAX. 800x400px)</p>
+    </div>
+    <input id="dropzone-file" type="file" class="hidden" accept=".svg, .png, .jpg, .gif" (change)="onFileChange($event)" required>
+  </label>
+  <!-- Message d'erreur -->
+  <div *ngIf="coworkspaceForm.get('image')?.invalid && (coworkspaceForm.get('image')?.dirty || coworkspaceForm.get('image')?.touched)"
+    class="text-red-500 text-sm mt-1">
+    <span *ngIf="coworkspaceForm.get('image')?.errors?.['required']">L'image est obligatoire.</span>
+  </div>
+</div>
+
+  <!-- Actions du formulaire -->
+  <div class="mt-6 flex gap-4">
+    <button type="submit" [disabled]="coworkspaceForm.invalid"
+      class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700">
+      Soumettre
+    </button>
+   
+  </div>
+</form>
