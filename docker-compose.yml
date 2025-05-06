@@ -1,9 +1,6 @@
-version: '3.8'
-
 services:
   db:
     image: mysql:8.0
-    container_name: mysql-db
     volumes:
       - mysql_data:/var/lib/mysql
     environment:
@@ -12,7 +9,7 @@ services:
       MYSQL_USER: myuser
       MYSQL_PASSWORD: mypass
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "db"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -20,8 +17,7 @@ services:
       - mynetwork
 
   springpart:
-    image: ${CI_REGISTRY_IMAGE}/backend:${TAG:-latest}
-    container_name: springpart
+    image: ${CI_REGISTRY_IMAGE}/backend:${TAG}
     environment:
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/mydb
@@ -36,8 +32,7 @@ services:
       - mynetwork
 
   angularpart:
-    image: ${CI_REGISTRY_IMAGE}/frontend:${TAG:-latest}
-    container_name: angularpart
+    image: ${CI_REGISTRY_IMAGE}/frontend:${TAG}
     ports:
       - "80:80"
     depends_on:
