@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start:dev": "ng serve --proxy-config proxyconfig.json",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "serve -s dist/frontend",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -26,6 +26,7 @@
     "phosphor-icons": "^1.4.2",
     "postcss": "^8.5.3",
     "rxjs": "~7.8.0",
+    "serve": "^14.2.4",
     "tailwindcss": "^4.1.4",
     "tslib": "^2.3.0",
     "uuid": "^11.1.0",
